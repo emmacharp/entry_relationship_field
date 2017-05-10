@@ -113,50 +113,32 @@
  * CSS for entry relationship field iframe
  */
 #entry-relationship-ctn {
-	background-color: rgba(241, 241, 241, 0);
+	transition: opacity 0.45s;
+	overflow: hidden;
 	position: fixed;
-	z-index: 10000;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	right: 0;
-	overflow: hidden;
-
-	visibility: collapse;
-	opacity: 1;
+	background: #fff;
+	z-index: 10000;
+	opacity: 0;
 	pointer-events: none;
-	-webkit-transition: background-color 200ms ease-out, visibility 0ms linear 200ms;
-	-moz-transition: background-color 200ms ease-out, visibility 0ms linear 200ms;
-	-ms-transition: background-color 200ms ease-out, visibility 0ms linear 200ms;
-	transition: background-color 200ms ease-out, visibility 0ms linear 200ms;
-}
-
-#entry-relationship-ctn.show {
-	background: rgba(241, 241, 241, 0.9);
-	visibility: visible;
-	opacity: 1;
-	pointer-events: all;
-	cursor: pointer;
-	-webkit-transition: background-color 200ms linear 0ms, visibility 0ms linear 0ms;
-	-moz-transition: background-color 200ms linear 0ms, visibility 0ms linear 0ms;
-	-ms-transition: background-color 200ms linear 0ms, visibility 0ms linear 0ms;
-	transition: background-color 200ms linear 0ms, visibility 0ms linear 0ms;
 }
 
 #entry-relationship-ctn > .iframe {
-	transition: opacity 200ms ease-in;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-color: #fff;
+	background: #fff;
 	width: 100%;
 	height: 100%;
-	opacity: 0;
 }
 
-#entry-relationship-ctn.show > .iframe {
+#entry-relationship-ctn.show {
 	opacity: 1;
+	pointer-events: auto;
 }
 
 #entry-relationship-ctn.show > .iframe > iframe {
@@ -178,6 +160,7 @@ body.entry_relationship {
 	padding-left: 0;
 }
 
+body.entry_relationship #context .link-preview,
 body.entry_relationship #contents .actions > *:nth-child(n + 2),
 body.entry_relationship .notifier {
 	display: none;
@@ -190,4 +173,5 @@ body.entry_relationship #breadcrumbs nav {
 
 body.entry_relationship #context {
 	left: 0;
+	padding-left: 0;
 }

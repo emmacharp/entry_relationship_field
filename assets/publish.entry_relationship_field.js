@@ -122,7 +122,7 @@
 	var defineExternals = function () {
 		var self = {
 			hide: function (reRender) {
-				ctn.removeClass('show').find('.iframe>iframe').fadeOut(300, function () {
+				ctn.removeClass('show').find('.iframe>iframe').fadeOut(450, function () {
 					$(this).empty().remove();
 					html.removeClass('no-scroll');
 					ctn.css('background-color', '');
@@ -146,7 +146,7 @@
 
 				S.Utilities.requestAnimationFrame(function () {
 					ctn.addClass('show');
-					ctn.find('.iframe>iframe').delay(300).fadeIn(200);
+					ctn.find('.iframe>iframe').delay(450).fadeIn(250);
 
 					if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
