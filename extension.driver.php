@@ -3,11 +3,11 @@
 	Copyight: Deux Huit Huit 2014
 	LICENCE: MIT http://deuxhuithuit.mit-license.org;
 	*/
-	
+
 	if(!defined("__IN_SYMPHONY__")) die("<h2>Error</h2><p>You cannot directly access this file</p>");
-	
+
 	require_once(EXTENSIONS . '/entry_relationship_field/fields/field.entry_relationship.php');
-	
+
 	/**
 	 *
 	 * @author Deux Huit Huit
@@ -21,7 +21,7 @@
 		 * @var string
 		 */
 		const EXT_NAME = 'Entry Relationship Field';
-		
+
 		/**
 		 * Symphony utility function that permits to
 		 * implement the Observer/Observable pattern.
@@ -47,15 +47,15 @@
 			} else {
 				$author = Administration::instance()->Author;
 			}
-			
+
 			// Work around single group limit in nav
 			$group = $author->isDeveloper() ? 'developer' : 'manager';
-			
+
 			return array(
 					array (
 						'location' => __('System'),
 						'name' => __('ERF Clean up'),
-						'link' => 'cleanup',
+						'link' => 'cleanup/',
 						'limit' => $group,
 					) // nav group
 			); // nav
@@ -69,7 +69,7 @@
 		public function appendAssets(array $context) {
 			// store the callback array locally
 			$c = Administration::instance()->getPageCallback();
-			
+
 			// publish page
 			if($c['driver'] == 'publish') {
 				Administration::instance()->Page->addStylesheetToHead(
@@ -83,7 +83,7 @@
 					10,
 					false
 				);
-				
+
 			} else if ($c['driver'] == 'blueprintssections') {
 				Administration::instance()->Page->addStylesheetToHead(
 					URL . '/extensions/entry_relationship_field/assets/section.entry_relationship_field.css',
@@ -116,26 +116,26 @@
 		 */
 		public function update($previousVersion = false) {
 			$ret = true;
-			
+
 			if (!$previousVersion) {
 				$previousVersion = '0.0.1';
 			}
-			
+
 			// less than 1.0.2
 			if ($ret && version_compare($previousVersion, '1.0.2', '<')) {
 				$ret = FieldEntry_relationship::update_102();
 			}
-			
+
 			// less than 1.0.3
 			if ($ret && version_compare($previousVersion, '1.0.3', '<')) {
 				$ret = FieldEntry_relationship::update_103();
 			}
-			
+
 			// less than 2.0.0
 			if ($ret && version_compare($previousVersion, '2.0.0', '<')) {
 				$ret = FieldEntry_relationship::update_200();
 			}
-			
+
 			return $ret;
 		}
 
