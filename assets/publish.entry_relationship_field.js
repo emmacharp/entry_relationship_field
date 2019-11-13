@@ -43,29 +43,29 @@
 			return;
 		}
 
-		var form = S.Elements.contents.find('form');
+		var primary = S.Elements.primary;
 
 		if (!!parent) {
 			// block already link items
 			$.each(parent.current.values(), function (index, value) {
-				form.find('#id-' + value).addClass('inactive er-already-linked');
+				primary.find('#id-' + value).addClass('inactive er-already-linked');
 			});
 		}
 
-		body.addClass('entry_relationship');
+		html.addClass('entry_relationship');
 
 		// remove everything in header, except notifier
 		S.Elements.header.children().not('.notifier').remove();
 		// Remove everything from the notifier except errors
 		S.Elements.header.find('.notifier .notice:not(.error)').trigger('detach.notify');
-		form.find('>table th:not([id])').remove();
-		form.find('>table td:not([class]):not(:first-child)').each(function () {
+		primary.find('>table th:not([id])').remove();
+		primary.find('>table td:not([class]):not(:first-child)').each(function () {
 			var td = $(this);
 			td.find('input').appendTo(td.prev('td'));
 			td.remove();
 		});
 		// Close support
-		var btnClose = $('<button />').attr('type', 'button').append('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="19.9px" height="19.9px" viewBox="0 0 19.9 19.9"><path fill="currentColor" d="M1,19.9c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4L18.2,0.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L1.7,19.6C1.5,19.8,1.3,19.9,1,19.9z"/><path fill="currentColor" d="M18.9,19.9c-0.3,0-0.5-0.1-0.7-0.3L0.3,1.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l17.9,17.9c0.4,0.4,0.4,1,0,1.4C19.4,19.8,19.2,19.9,18.9,19.9z"/></svg>').append('<span><span>Close</span></span>').click(function (e) {
+		var btnClose = $('<button />').attr('type', 'button').append('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="19.9px" height="19.9px" viewBox="0 0 19.9 19.9"><path fill="currentColor" d="M1,19.9c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4L18.2,0.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L1.7,19.6C1.5,19.8,1.3,19.9,1,19.9z"/><path fill="currentColor" d="M18.9,19.9c-0.3,0-0.5-0.1-0.7-0.3L0.3,1.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l17.9,17.9c0.4,0.4,0.4,1,0,1.4C19.4,19.8,19.2,19.9,18.9,19.9z"/></svg>').click(function (e) {
 			parent.cancel();
 			parent.hide();
 		});
@@ -80,20 +80,20 @@
 		});
 
 		// Drawers support
-		S.Elements.wrapper.find('.actions').filter(function () {
+		S.Elements.contents.find('.actions').filter(function () {
 			return body.hasClass('page-index') || $(this).is('ul');
 		}).find('li').filter(function () {
 			return !$(this).find('a[href^="#drawer-"]').length;
 		}).remove().end().end().append(btnCloseWrapper);
 
 		// makes all link open in new window/tab
-		form.find('table tr td a').attr('target', '_blank');
+		primary.find('table tr td a').attr('target', '_blank');
 		// disable breadcrumbs links
 		S.Elements.context.find('#breadcrumbs nav a').attr('href', '#').click(function (e) {
 			e.preventDefault();
 			return false;
 		});
-		form.find('table tr td').css('cursor', 'pointer').click(function (e) {
+		primary.find('table tr td').css('cursor', 'pointer').click(function (e) {
 			var t = $(this);
 			var target = $(e.target);
 
@@ -138,10 +138,13 @@
 					if (!!i$) {
 						i$(iw).trigger('beforeunload').trigger('unload');
 					}
-					// remove iframe
-					$(this).empty().remove();
-					html.removeClass('no-scroll');
-					ctn.css('background-color', '');
+					$(this).removeAttr('style');
+					$(this).on('transitionend', function(){
+						// remove iframe
+						$(this).empty().remove();
+						html.removeClass('no-scroll');
+						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown');
+					});
 				});
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 					window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(-1);
@@ -152,20 +155,44 @@
 				self.current = null;
 				win.focus();
 			},
-			show: function (url) {
+			show: function (url, ctnParent) {
 				var ictn = $('<div />').attr('class', 'iframe');
 				var iframe = $('<iframe />').attr('src', url);
 
 				html.addClass('no-scroll');
 				ictn.append(iframe);
-				ctn.empty().append(ictn);
+				if(ctn.is('.show')) {
+					ctn.find('.loaded').removeClass('loaded');
+					// debugger;
+					ctn.find('iframe').removeAttr('style src').on('transitionend', function(){
+						// debugger;
+						ctn.empty().append(ictn);
+						if(!!ctnParent) {
+							ctnParent.append(ctn).addClass('ctn-is-shown');
+						}
+					});
+				} else {
+					ctn.empty().append(ictn);
+					if(!!ctnParent) {
+						ctnParent.append(ctn).addClass('ctn-is-shown');
+					}
+				}
 
+				// debugger;
+				
+				// debugger;
 				S.Utilities.requestAnimationFrame(function () {
 					ctn.addClass('show');
 
 					if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
 					}
+
+					iframe.on('load', function() {
+						// debugger;
+						this.style.height = $(this.contentWindow.document.body).outerHeight() + "px";
+						$(this).closest('.iframe').addClass('loaded');
+					});
 				});
 			},
 			link: function (entryId, timestamp) {
@@ -290,8 +317,8 @@
 		return baseurl() + '/publish/' + section + '/edit/' + entry_id + '/';
 	};
 
-	var openIframe = function (handle, action) {
-		S.Extensions.EntryRelationship.show(createPublishUrl(handle, action));
+	var openIframe = function (handle, action, ctnParent) {
+		S.Extensions.EntryRelationship.show(createPublishUrl(handle, action), ctnParent);
 	};
 
 	var syncCurrent = function (self) {
@@ -551,20 +578,22 @@
 
 		var btnCreateClick = function (e) {
 			var t = $(this);
+			var frame = t.closest('.field').find('.frame');
 			syncCurrent(self);
 			replaceId = undefined;
 			insertPosition = getInsertPosition(t);
-			openIframe(t.attr('data-create') || sections.val(), 'new');
+			openIframe(t.attr('data-create') || sections.val(), 'new', frame);
 			e.stopPropagation();
 			e.preventDefault();
 		};
 
 		var btnLinkClick = function (e) {
 			var t = $(this);
+			var frame = t.closest('.field').find('.frame');
 			syncCurrent(self);
 			replaceId = undefined;
 			insertPosition = getInsertPosition(t);
-			openIframe(t.attr('data-link') || sections.val());
+			openIframe(t.attr('data-link') || sections.val(), undefined, frame);
 			e.stopPropagation();
 			e.preventDefault();
 		};
@@ -587,7 +616,7 @@
 			var section = t.attr('data-section') || li.attr('data-section');
 			replaceId = undefined;
 			insertPosition = undefined;
-			openIframe(section, 'edit/' + id);
+			openIframe(section, 'edit/' + id, li);
 			e.stopPropagation();
 			e.preventDefault();
 		};

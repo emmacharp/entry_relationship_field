@@ -7,7 +7,7 @@
  * CSS for entry/reverse relationship field
  */
 
-.field-entry_relationship > label,
+/*.field-entry_relationship > label,
 .field-reverse_relationship > label {
 	position: static;
 	margin-bottom: 1rem!important;
@@ -152,13 +152,54 @@
 	left: 1rem;
 	right: 0;
 	top: 2.5rem;
+}*/
+
+.field.field-entry_relationship .ctn-is-shown {
+	z-index: 1;
+}
+
+.field.field-entry_relationship .ctn-is-shown .frame-header {
+	background-color: var(--standard-field-background-color);
+}
+
+.field.field-entry_relationship .ctn-is-shown:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: var(--color-main-lightest);
+	opacity: .5;
+}
+
+.field.field-entry_relationship label {
+	height: auto;
+	margin-top: var(--standard-inner-rhythm);
+	margin-bottom: var(--standard-inner-rhythm);
+}
+
+.field.field-entry_relationship label>span {
+	top: auto;
+}
+
+.field-entry_relationship .frame {
+	--frame-background-color: transparent;
+}
+
+.field-entry_relationship .frame>ul {
+	margin: 0 1px;
+}
+
+.field-entry_relationship .frame .frame-header {
+	padding: var(--standard-inner-rhythm);
 }
 
 
 /**
  * CSS for entry relationship field in tab group
  */
-.column.secondary .field.field-entry_relationship .single > div > div,
+/*.column.secondary .field.field-entry_relationship .single > div > div,
 .tab-group:nth-child(n + 2) .field.field-entry_relationship .single > div > div {
 	justify-content: flex-end;
 	margin-bottom: 1rem;
@@ -176,20 +217,21 @@
 	display: block;
 	text-align: right;
 }
-
+*/
 
 /**
  * CSS for entry relationship field iframe
  */
 #entry-relationship-ctn {
-	overflow: hidden;
-	position: fixed;
-	z-index: 10000;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
+	/*overflow: hidden;*/
+	/*position: fixed;*/
+	/*z-index: 10000;*/
+	/*top: 0;*/
+	/*left: 0;*/
+	/*bottom: 0;*/
+	/*right: 0;*/
 	pointer-events: none;
+	background-color: var(--color-main-lighter);
 }
 
 #entry-relationship-ctn.show {
@@ -197,37 +239,61 @@
 }
 
 #entry-relationship-ctn > .iframe {
-	transition: opacity 200ms ease-in;
-	box-sizing: border-box;
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-color: #fff;
+	transition: opacity 100ms ease-out;
+	/*box-sizing: border-box;*/
+	/*position: absolute;*/
+	/*top: 0;*/
+	/*left: 0;*/
+	/*background-color: #fff;*/
 	width: 100%;
-	height: 100%;
+	/*height: 100%;*/
 	opacity: 0;
 }
 
 #entry-relationship-ctn.show > .iframe {
 	opacity: 1;
+	position: relative;
 }
 
-#entry-relationship-ctn.show > .iframe > iframe {
+#entry-relationship-ctn iframe {
 	display: block;
-	width: 100%;
-	height: 100%;
+	width: inherit;
+	transition: height 200ms ease-out;
+	height: 0;
 	opacity: 1;
+	/*max-height: var(--dimension-smallest);*/
+}
+
+#entry-relationship-ctn.show .iframe:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: var(--color-main-lighter);
+	opacity: 1;
+	transition: opacity 100ms ease-in;
+}
+
+#entry-relationship-ctn.show .iframe.loaded:after {
+	opacity: 0;
+	pointer-events: none;
+}
+
+#entry-relationship-ctn.show iframe {
+	height: var(--spacing-broad);
 }
 
 /**
  * CSS for entry relationship field page customization
  */
 
-html.no-scroll {
+/*html.no-scroll {
 	overflow: hidden;
-}
+}*/
 
-body.entry_relationship {
+/*body.entry_relationship {
 	padding-left: 0;
 }
 
@@ -235,12 +301,66 @@ body.entry_relationship #contents .actions > *:nth-child(n + 2),
 body.entry_relationship .notifier {
 	display: none;
 }
+*/
 
-body.entry_relationship #header,
-body.entry_relationship #breadcrumbs nav {
+html.entry_relationship {
+	/*overflow-y: auto;*/
+	--scrollbar-background-color: var(--color-main-lighter);
+	--backframe-background-color: var(--color-main-lighter);
+	--frontframe-background-color: var(--color-main-lighter);
+	--standard-outer-rhythm: var(--standard-inner-rhythm);
+	--standard-field-max-width: 100%;
+}
+
+html.entry_relationship body {
+	display: flex;
+	flex-direction: column;
+}
+
+html.entry_relationship [id="controls"] {
+	order: -1;
+}
+
+html.entry_relationship button[name="action[save]"]:after {
+	left: 100%;
+	right: auto;
+	margin-right: auto;
+	margin-left: var(--spacing-micro);
+
+}
+
+html.entry_relationship #header,
+html.entry_relationship #nav,
+html.entry_relationship #breadcrumbs,
+html.entry_relationship #footer,
+html.entry_relationship #context,
+html.entry_relationship button[name="action[delete]"],
+html.entry_relationship .actions .modal,
+html.entry_relationship .actions [href="#drawer-section-associations"] {
 	display: none;
 }
 
-body.entry_relationship #context {
-	left: 0;
+html.entry_relationship .notifier {
+	display: none !important;
+}
+
+html.entry_relationship {
+	scrollbar-color: transparent transparent;
+	scrollbar-width: var(--scrollbar-width);
+}
+
+html.entry_relationship::-webkit-scrollbar {
+	background-color: var(--scrollbar-background-color);
+	height: var(--scrollbar-height);
+	width: var(--scrollbar-width);
+}
+
+html.entry_relationship:hover {
+	scrollbar-color: var(--scrollbar-thumb-background-color) transparent;
+
+}
+
+html.entry_relationship:hover::-webkit-scrollbar-thumb {
+	background-color: var(--scrollbar-thumb-background-color);
+	border-radius: var(--scrollbar-thumb-border-radius);
 }
