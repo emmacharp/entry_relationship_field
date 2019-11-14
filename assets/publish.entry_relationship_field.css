@@ -154,12 +154,43 @@
 	top: 2.5rem;
 }*/
 
+.field.field-entry_relationship {
+	/*--primary-field-background-color: var(--color-accent-lighter);*/
+}
+
+.field.field-entry_relationship>label>span {
+	/*font-weight: 400;*/
+	z-index: 2;
+	position: relative;
+	color: var(--standard-input-color);
+}
+
 .field.field-entry_relationship .ctn-is-shown {
+	position: relative;
 	z-index: 1;
 }
 
 .field.field-entry_relationship .ctn-is-shown .frame-header {
-	background-color: var(--standard-field-background-color);
+	background-color: var(--color-accent-lighter);
+	pointer-events: none;
+}
+
+.field.field-entry_relationship .ctn-is-shown .destructor {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.field.field-entry_relationship .ctn-is-loaded:after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	top: -4px;
+	right: -4px;
+	bottom: -4px;
+	left: -4px;
+	border: 4px solid var(--color-accent);
+	border-radius: var(--radius-small);
+	z-index: 1;
 }
 
 .field.field-entry_relationship .ctn-is-shown:before {
@@ -169,8 +200,9 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--color-main-lightest);
-	opacity: .5;
+	background-color: var(--frontframe-background-color);
+	opacity: .8;
+	/*z-index: 1;*/
 }
 
 .field.field-entry_relationship label {
@@ -184,15 +216,45 @@
 }
 
 .field-entry_relationship .frame {
-	--frame-background-color: transparent;
+	--frame-border-radius: var(--radius-small);
+	--frame-background-color: var(--standard-field-background-color);
+	/*margin: var(--standard-inner-rhythm) calc(var(--standard-inner-rhythm) / 2);*/
 }
 
 .field-entry_relationship .frame>ul {
-	margin: 0 1px;
+	margin: 0;
+	/*border-top: 1px dashed var(--color-ui);*/
+	/*border-bottom: 1px dashed var(--color-ui);*/
+}
+
+.field-entry_relationship .frame>ul>li+li {
+	border-top: 1px dashed var(--color-ui);
 }
 
 .field-entry_relationship .frame .frame-header {
 	padding: var(--standard-inner-rhythm);
+}
+
+
+.field-entry_relationship>footer {
+	display: flex;
+	align-items: baseline;
+	/*background-color: var(--color-accent-lighter);*/
+	border-radius: inherit;
+}
+
+.field-entry_relationship>footer>fieldset {
+	display: contents;
+}
+
+.field-entry_relationship>footer section {
+	display: inherit;
+	align-items: inherit;
+	white-space: nowrap;
+}
+
+.field-entry_relationship>footer>fieldset>* {
+	flex-shrink: 0;
 }
 
 
@@ -231,7 +293,9 @@
 	/*bottom: 0;*/
 	/*right: 0;*/
 	pointer-events: none;
-	background-color: var(--color-main-lighter);
+	background-color: var(--color-accent-lighter);
+	position: relative;
+	z-index: 1;
 }
 
 #entry-relationship-ctn.show {
@@ -261,7 +325,7 @@
 	transition: height 200ms ease-out;
 	height: 0;
 	opacity: 1;
-	/*max-height: var(--dimension-smallest);*/
+	max-height: 60vh;
 }
 
 #entry-relationship-ctn.show .iframe:after {
@@ -271,7 +335,7 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--color-main-lighter);
+	background-color: var(--frontframe-background-color);
 	opacity: 1;
 	transition: opacity 100ms ease-in;
 }
@@ -282,7 +346,7 @@
 }
 
 #entry-relationship-ctn.show iframe {
-	height: var(--spacing-broad);
+	height: var(--spacing-micro);
 }
 
 /**
@@ -304,10 +368,8 @@ body.entry_relationship .notifier {
 */
 
 html.entry_relationship {
-	/*overflow-y: auto;*/
-	--scrollbar-background-color: var(--color-main-lighter);
-	--backframe-background-color: var(--color-main-lighter);
-	--frontframe-background-color: var(--color-main-lighter);
+	--backframe-background-color: var(--color-accent-lighter);
+	--frontframe-background-color: var(--color-accent-lighter);
 	--standard-outer-rhythm: var(--standard-inner-rhythm);
 	--standard-field-max-width: 100%;
 }
@@ -319,6 +381,10 @@ html.entry_relationship body {
 
 html.entry_relationship [id="controls"] {
 	order: -1;
+	border-top: 0;
+	border-bottom: 1px solid var(--color-ui);
+	padding: var(--standard-inner-rhythm) 0;
+	margin: 0 var(--standard-inner-rhythm);
 }
 
 html.entry_relationship button[name="action[save]"]:after {
@@ -336,7 +402,8 @@ html.entry_relationship #footer,
 html.entry_relationship #context,
 html.entry_relationship button[name="action[delete]"],
 html.entry_relationship .actions .modal,
-html.entry_relationship .actions [href="#drawer-section-associations"] {
+html.entry_relationship .actions .drawer,
+html.entry_relationship .actions .apply {
 	display: none;
 }
 
@@ -350,7 +417,7 @@ html.entry_relationship {
 }
 
 html.entry_relationship::-webkit-scrollbar {
-	background-color: var(--scrollbar-background-color);
+	background-color: var(--backframe-background-color);
 	height: var(--scrollbar-height);
 	width: var(--scrollbar-width);
 }

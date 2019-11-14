@@ -80,7 +80,7 @@
 		});
 
 		// Drawers support
-		S.Elements.contents.find('.actions').filter(function () {
+		S.Elements.controls.find('.actions').filter(function () {
 			return body.hasClass('page-index') || $(this).is('ul');
 		}).find('li').filter(function () {
 			return !$(this).find('a[href^="#drawer-"]').length;
@@ -143,7 +143,7 @@
 						// remove iframe
 						$(this).empty().remove();
 						html.removeClass('no-scroll');
-						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown');
+						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
 					});
 				});
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
@@ -163,6 +163,7 @@
 				ictn.append(iframe);
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
+					ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
 					// debugger;
 					ctn.find('iframe').removeAttr('style src').on('transitionend', function(){
 						// debugger;
@@ -192,6 +193,7 @@
 						// debugger;
 						this.style.height = $(this.contentWindow.document.body).outerHeight() + "px";
 						$(this).closest('.iframe').addClass('loaded');
+						ctnParent.addClass('ctn-is-loaded');
 					});
 				});
 			},
@@ -245,6 +247,10 @@
 	'use strict';
 
 	var doc = $(document);
+	
+	var ctn = $('#entry-relationship-ctn');
+	var body = $('body');
+
 	var notifier;
 	var entryId = S.Context.get().env.entry_id;
 
@@ -556,6 +562,7 @@
 			if (!!id) {
 				self.unlink(id);
 			}
+			li.find(ctn).appendTo(body);
 			li.empty().remove();
 			if (!list.children().length) {
 				frame.addClass('empty');
@@ -628,9 +635,9 @@
 			var id = t.attr('data-replace') || li.attr('data-entry-id');
 			insertPosition = undefined;
 			if (!!unlink(values(), id).changed) {
-				unlinkAndUpdateUI(li);
+				// unlinkAndUpdateUI(li);
 				replaceId = id;
-				openIframe(sections.val());
+				openIframe(sections.val(), undefined, li);
 			}
 			e.stopPropagation();
 			e.preventDefault();
@@ -930,6 +937,7 @@
 			if (!!id) {
 				self.unlink(id, timestamp);
 			}
+			li.find(ctn).appendTo(body);
 			li.empty().remove();
 			if (!list.children().length) {
 				frame.addClass('empty');

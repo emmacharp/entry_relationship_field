@@ -1133,7 +1133,7 @@
 
 		private function createActionBarMenu($sections)
 		{
-			$wrap = new XMLElement('div');
+			$wrap = new XMLElement('footer');
 			$actionBar = '';
 			$modeFooter = $this->get('mode_footer');
 			if ($modeFooter) {
@@ -1146,14 +1146,12 @@
 			}
 			if (empty($actionBar)) {
 				$fieldset = new XMLElement('fieldset');
-				$fieldset->setAttribute('class', 'single');
-				$div = new XMLElement('div');
 
 				if ($this->is('allow_search')) {
-					$searchWrap = new XMLElement('div');
+					$searchWrap = new XMLElement('section');
 					$searchWrap->setAttribute('data-interactive', 'data-interactive');
 					$searchWrap->setAttribute('class', 'search');
-					$searchInput = Widget::Input('', null, 'text', array(
+					$searchInput = Widget::Input('', null, 'search', array(
 						'class' => 'search',
 						'data-search' => '',
 						'placeholder' => __('Search for entries')
@@ -1166,7 +1164,7 @@
 				}
 
 				if ($this->is('allow_new') || $this->is('allow_link') || $this->is('allow_search')) {
-					$selectWrap = new XMLElement('div');
+					$selectWrap = new XMLElement('section');
 					$selectWrap->appendChild(new XMLElement('span', __('Related section: '), array('class' => 'sections-selection')));
 					$options = array();
 					foreach ($sections as $section) {
@@ -1174,23 +1172,23 @@
 					}
 					$select = Widget::Select('', $options, array('class' => 'sections sections-selection'));
 					$selectWrap->appendChild($select);
-					$div->appendChild($selectWrap);
+					$fieldset->appendChild($selectWrap);
 				}
 				if ($this->is('allow_new')) {
-					$div->appendChild(new XMLElement('button', __('Create new'), array(
+					$fieldset->appendChild(new XMLElement('button', __('Create new'), array(
 						'type' => 'button',
 						'class' => 'create',
 						'data-create' => '',
 					)));
 				}
 				if ($this->is('allow_link')) {
-					$div->appendChild(new XMLElement('button', __('Link to entry'), array(
+					$fieldset->appendChild(new XMLElement('button', __('Link to entry'), array(
 						'type' => 'button',
 						'class' => 'link',
 						'data-link' => '',
 					)));
 				}
-				$fieldset->appendChild($div);
+
 				$wrap->appendChild($fieldset);
 			}
 			else {
