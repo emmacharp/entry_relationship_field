@@ -65,7 +65,7 @@
 			td.remove();
 		});
 		// Close support
-		var btnClose = $('<button />').attr('type', 'button').append('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="19.9px" height="19.9px" viewBox="0 0 19.9 19.9"><path fill="currentColor" d="M1,19.9c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4L18.2,0.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L1.7,19.6C1.5,19.8,1.3,19.9,1,19.9z"/><path fill="currentColor" d="M18.9,19.9c-0.3,0-0.5-0.1-0.7-0.3L0.3,1.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l17.9,17.9c0.4,0.4,0.4,1,0,1.4C19.4,19.8,19.2,19.9,18.9,19.9z"/></svg>').click(function (e) {
+		var btnClose = $('<button />').attr({'type': 'button', 'name': 'action[close]'}).click(function (e) {
 			parent.cancel();
 			parent.hide();
 		});
@@ -164,9 +164,7 @@
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
 					ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
-					// debugger;
 					ctn.find('iframe').removeAttr('style src').on('transitionend', function(){
-						// debugger;
 						ctn.empty().append(ictn);
 						if(!!ctnParent) {
 							ctnParent.append(ctn).addClass('ctn-is-shown');
@@ -179,9 +177,7 @@
 					}
 				}
 
-				// debugger;
 				
-				// debugger;
 				S.Utilities.requestAnimationFrame(function () {
 					ctn.addClass('show');
 
@@ -189,13 +185,31 @@
 						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
 					}
 
-					iframe.on('load', function() {
-						// debugger;
-						this.style.height = $(this.contentWindow.document.body).outerHeight() + "px";
-						$(this).closest('.iframe').addClass('loaded');
+					$(iframe.get(0).contentWindow).on('load', function() {
+						iframe.get(0).style.height = $(iframe.get(0).contentWindow.document.body).outerHeight() + "px";
+						$(iframe).closest('.iframe').addClass('loaded');
 						ctnParent.addClass('ctn-is-loaded');
+
+						iframe.on('transitionend', function() {
+
+							var context_height = S.Elements.context.outerHeight();
+							var outer_margin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(document.documentElement).fontSize); 
+							var actual_primary_scroll = S.Elements.primary.scrollTop();
+							var ctn_offset = ctnParent.offset().top;
+
+
+							var new_scroll_position = actual_primary_scroll + ctn_offset;
+
+							// If EntryRelationship is present in frame, let render() do the scrolling;
+							// if(!window.self.Symphony.Extensions.EntryRelationship) {
+								S.Elements.primary.scrollTop(S.Elements.primary.scrollTop() + ctnParent.offset().top - context_height - outer_margin);
+							// }
+						});
+
 					});
 				});
+
+
 			},
 			link: function (entryId, timestamp) {
 				if (!self.current) {
@@ -460,10 +474,19 @@
 			}
 			isRendering = true;
 			$.get(renderurl(hidden.val(), fieldId, debug)).done(function (data) {
+
 				data = $(data);
 				var error = data.find('error');
 				var li = data.find('li');
 				var fx = !li.length ? 'addClass' : 'removeClass';
+
+				li.each(function() {
+					var handle = $(this).attr('data-section');
+					var id = $(this).attr('data-entry-id');
+					var prefetch_url = createPublishUrl(handle, 'edit/' + id);
+					var prefetch_tag = '<link rel="prefetch" href="'+prefetch_url+'" as="document" />';
+					$('body').append(prefetch_tag);
+				});
 
 				if (!!error.length) {
 					list.empty().append(
@@ -508,6 +531,12 @@
 					}
 					updateActionBar(li);
 					updateSearchUrl();
+
+
+					// Recalculate frame parent height when entries are rendered
+					if(window.self != window.top) {
+						$('#entry-relationship-ctn iframe', window.parent.document).height($(window.document.body).outerHeight() + 'px');
+					}
 				}
 			}).error(function (data) {
 				notifier.trigger('attach.notify', [

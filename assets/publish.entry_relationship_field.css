@@ -158,6 +158,19 @@
 	/*--primary-field-background-color: var(--color-accent-lighter);*/
 }
 
+[id="primary"] {
+	/*scroll-behavior: smooth;*/
+}
+
+.field.field-entry_relationship>.frame,
+.field.field-entry_relationship>.frame>ul,
+.field.field-entry_relationship>.frame>ul>li {
+	background-color: inherit;
+	border-color: inherit;
+}
+
+
+
 .field.field-entry_relationship>label>span {
 	/*font-weight: 400;*/
 	z-index: 2;
@@ -165,44 +178,83 @@
 	color: var(--standard-input-color);
 }
 
-.field.field-entry_relationship .ctn-is-shown {
-	position: relative;
-	z-index: 1;
+.field.field-entry_relationship li {
+	margin: 0;
+	width: auto;
+	transition: margin 120ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-.field.field-entry_relationship .ctn-is-shown .frame-header {
-	background-color: var(--color-accent-lighter);
+.field.field-entry_relationship li.ctn-is-shown {
+	border-style: solid;
+	border-width: 1px;
+}
+
+html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[id="entry-relationship-ctn"] {
+	/*position: relative;*/
+	/*z-index: 1;*/
+	margin-left: calc(-1 * var(--standard-outer-rhythm));
+	margin-right: calc(-1 * var(--standard-outer-rhythm));
+}
+
+.field.field-entry_relationship .ctn-is-shown~* {
+	position: initial;
+}
+
+.field.field-entry_relationship li.ctn-is-loaded .frame-header {
 	pointer-events: none;
+	padding: 0;
+	/*background-color: var(--color-clear);*/
+	z-index: 1;
+	display: block;
 }
 
-.field.field-entry_relationship .ctn-is-shown .destructor {
+.field.field-entry_relationship li.ctn-is-loaded .frame-header>* {
+	padding: var(--standard-inner-rhythm);
+}
+
+.field.field-entry_relationship li.ctn-is-loaded .frame-header>*:first-child {
+	margin-bottom: -100%;
+	min-height: calc(var(--standard-inner-rhythm) * 2 + 2.1em);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+}
+
+.field.field-entry_relationship li.ctn-is-shown .destructor {
 	opacity: 0;
 	pointer-events: none;
 }
 
-.field.field-entry_relationship .ctn-is-loaded:after {
-	content: "";
+.field.field-entry_relationship .ctn-is-shown:after {
+	/*content: "";*/
 	position: absolute;
 	pointer-events: none;
-	top: -4px;
-	right: -4px;
-	bottom: -4px;
-	left: -4px;
-	border: 4px solid var(--color-accent);
+	top: -2px;
+	right: -2px;
+	bottom: -2px;
+	left: -2px;
+	border: 4px solid var(--color-accent-light);
 	border-radius: var(--radius-small);
 	z-index: 1;
 }
 
 .field.field-entry_relationship .ctn-is-shown:before {
-	content: "";
+	/*content: "";*/
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	background-color: var(--frontframe-background-color);
-	opacity: .8;
-	/*z-index: 1;*/
+	opacity: 0;
+	pointer-events: none;
+	mix-blend-mode: exclusion;
+	transition: opacity 100ms ease-in;
+}
+
+.field.field-entry_relationship .ctn-is-shown.ctn-is-loaded:before {
+	opacity: .1;
+	
 }
 
 .field.field-entry_relationship label {
@@ -293,9 +345,9 @@
 	/*bottom: 0;*/
 	/*right: 0;*/
 	pointer-events: none;
-	background-color: var(--color-accent-lighter);
-	position: relative;
-	z-index: 1;
+	background-color: var(--color-clear);
+	/*position: relative;*/
+	/*z-index: 1;*/
 }
 
 #entry-relationship-ctn.show {
@@ -325,7 +377,7 @@
 	transition: height 200ms ease-out;
 	height: 0;
 	opacity: 1;
-	max-height: 60vh;
+	max-height: 70vh;
 }
 
 #entry-relationship-ctn.show .iframe:after {
@@ -335,7 +387,7 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--frontframe-background-color);
+	background-color: var(--standard-field-background-color);
 	opacity: 1;
 	transition: opacity 100ms ease-in;
 }
@@ -346,7 +398,12 @@
 }
 
 #entry-relationship-ctn.show iframe {
-	height: var(--spacing-micro);
+	height: 0px;
+}
+
+li>#entry-relationship-ctn .iframe.loaded iframe {
+	/*height: var(--spacing-broader);*/
+	/*margin-top: calc(-1 * var(--standard-inner-rhythm) * 2 - 1.2em);*/
 }
 
 /**
@@ -368,32 +425,83 @@ body.entry_relationship .notifier {
 */
 
 html.entry_relationship {
-	--backframe-background-color: var(--color-accent-lighter);
-	--frontframe-background-color: var(--color-accent-lighter);
-	--standard-outer-rhythm: var(--standard-inner-rhythm);
+	--backframe-background-color: var(--color-clear);
+	--frontframe-background-color: var(--color-clear);
 	--standard-field-max-width: 100%;
+	--radius-current: 0;
+	--standard-outer-rhythm: 0;
+	
+	font-size: 62.5%;
+
 }
+
 
 html.entry_relationship body {
 	display: flex;
 	flex-direction: column;
 }
 
+html.entry_relationship body:after {
+	content: "";
+	position: fixed;
+	top: calc(var(--standard-inner-rhythm) * 2 + 2.1em);
+	pointer-events: none;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	box-shadow: inset 0px 0px 2px 1px var(--color-main-lighter),
+					inset 0px 0px 10px 0px var(--color-main-lighter);
+}
+
+html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
+	content: "New Entry";
+}
+
+html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
+	content: "Nouvelle entrée";
+}
+
+html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
+	margin-right: auto;
+	font-weight: 740;
+	color: var(--color-accent);
+}
+
 html.entry_relationship [id="controls"] {
 	order: -1;
 	border-top: 0;
 	border-bottom: 1px solid var(--color-ui);
-	padding: var(--standard-inner-rhythm) 0;
-	margin: 0 var(--standard-inner-rhythm);
+	padding: calc(var(--standard-inner-rhythm) / 2) 0;
+	margin: 0;
+	position: sticky;
+	top: 0;
+	justify-content: flex-end;
+}
+
+html.entry_relationship [id="contents"]>form>* {
+	flex-shrink: 0;
+}
+
+html.entry_relationship button[name="action[save]"] {
+	margin-right: var(--spacing-micro);
 }
 
 html.entry_relationship button[name="action[save]"]:after {
-	left: 100%;
-	right: auto;
-	margin-right: auto;
-	margin-left: var(--spacing-micro);
+	/*left: 100%;*/
+	/*right: auto;*/
+	/*margin-right: auto;*/
+	/*margin-left: var(--spacing-micro);*/
 
 }
+
+html.entry_relationship button[name="action[close]"]:after {
+	content: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='19.9px' height='19.9px' viewBox='0 0 19.9 19.9'%3E%3Cpath fill='currentColor' d='M1,19.9c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4L18.2,0.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L1.7,19.6C1.5,19.8,1.3,19.9,1,19.9z'/%3E%3Cpath fill='currentColor' d='M18.9,19.9c-0.3,0-0.5-0.1-0.7-0.3L0.3,1.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l17.9,17.9c0.4,0.4,0.4,1,0,1.4C19.4,19.8,19.2,19.9,18.9,19.9z'/%3E%3C/svg%3E");
+}
+
+html.entry_relationship button[name="action[close]"]:hover:after {
+	filter: invert(.9);
+}
+
 
 html.entry_relationship #header,
 html.entry_relationship #nav,
@@ -407,19 +515,19 @@ html.entry_relationship .actions .apply {
 	display: none;
 }
 
-html.entry_relationship .notifier {
+/*html.entry_relationship .notifier {
 	display: none !important;
-}
+}*/
 
 html.entry_relationship {
 	scrollbar-color: transparent transparent;
-	scrollbar-width: var(--scrollbar-width);
+	scrollbar-width: 0px;
 }
 
 html.entry_relationship::-webkit-scrollbar {
-	background-color: var(--backframe-background-color);
-	height: var(--scrollbar-height);
-	width: var(--scrollbar-width);
+	background-color: transparent;
+	height: 0px;
+	width: 0px;
 }
 
 html.entry_relationship:hover {
@@ -427,7 +535,7 @@ html.entry_relationship:hover {
 
 }
 
-html.entry_relationship:hover::-webkit-scrollbar-thumb {
-	background-color: var(--scrollbar-thumb-background-color);
-	border-radius: var(--scrollbar-thumb-border-radius);
+html.entry_relationship::-webkit-scrollbar-thumb {
+	/*background-color: var(--scrollbar-thumb-background-color);*/
+	/*border-radius: var(--scrollbar-thumb-border-radius);*/
 }
