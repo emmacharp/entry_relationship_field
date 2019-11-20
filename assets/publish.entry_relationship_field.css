@@ -3,212 +3,64 @@
 	License: MIT, see the LICENCE file
 */
 
-/**
- * CSS for entry/reverse relationship field
- */
-
-/*.field-entry_relationship > label,
-.field-reverse_relationship > label {
-	position: static;
-	margin-bottom: 1rem!important;
-}
-
-.field-entry_relationship {
-	position: relative; padding-bottom: 0.8rem;
-}
-
-.field.field-entry_relationship > .frame,
-.field.field-reverse_relationship > .frame {
-	margin: 1rem 0;
-	background: none;
-}
-
-.field.field-entry_relationship > .frame ul,
-.field.field-entry_relationship > .frame ol,
-.field.field-reverse_relationship > .frame ul,
-.field.field-reverse_relationship > .frame ol {
-	margin: 0;
-}
-
-.field.field-entry_relationship > .frame .frame-header {
-	transition: background 0.2s;
-}
-
-.field.field-entry_relationship > .frame .ordering .frame-header {
-	background: #2f77eb;
-}
-
-.field.field-entry_relationship > .frame .ordering * {
-	color: #fff;
-}
-
-.field.field-entry_relationship > .frame:not(.no-header):not(.empty); {
-	border-top: 0;
-}
-
-.field.field-entry_relationship > .frame .frame-header.no-content {
-	border-bottom: none;
-}
-
-.field.field-entry_relationship fieldset.single,
-.field.field-reverse_relationship fieldset.single {
-	text-align: right;
-}
-
-.field.field-entry_relationship fieldset.single > button,
-.field.field-reverse_relationship fieldset.single > button {
-	margin-right: 0px;
-	margin-left: 1rem;
-	margin-bottom: 1rem;
-}
-
-.field.field-entry_relationship fieldset.single > div,
-.field.field-reverse_relationship fieldset.single > div {
-	display: inline-flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-end;
-	flex-wrap: wrap;
-	min-width: 250px;
-}
-
-.field.field-entry_relationship fieldset.single > div > div,
-.field.field-reverse_relationship fieldset.single > div > div {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
-}
-
-.field.field-entry_relationship fieldset.single > div > button,
-.field.field-reverse_relationship fieldset.single > div > button {
-	margin: 0 0 0 1rem;
-}
-
-.field.field-reverse_relationship fieldset.single label {
-	margin-bottom: 0!important;
-}
-
-.field.field-entry_relationship .destructor a,
-.field.field-reverse_relationship .destructor a {
-	color: #aeaeae;
-	display: inline-block;
-	padding: 0 5px;
-	border-bottom: none;
-}
-
-.field.field-entry_relationship .destructor a:hover {
-	color: #3B3D40;
-}
-
-.field.field-entry_relationship .destructor a.edit:hover {
-	color: #282828;
-}
-
-.field.field-entry_relationship .destructor a.unlink:hover,
-.field.field-entry_relationship .destructor a.delete:hover,
-.field.field-reverse_relationship .destructor a.unlink:hover {
-	color: #e90a20;
-}
-
-.field.field-entry_relationship .content pre {
-	max-height: 300px;
-	overflow:auto;
-}
-.field.field-entry_relationship .content pre code {
-	white-space: pre-wrap;
-}
-
-.field.field-entry_relationship .sections {
-	width: auto;
-	margin: 0 0 0 1rem!important;
-}
-
-.field.field-entry_relationship select.sections {
-	min-width: 200px;
-	margin-left: 1rem;
-}
-
-.field.field-entry_relationship span.sections-selection {
-	margin-left: 1rem;
-}
-
-.field.field-entry_relationship input.search {
-	width: calc(100% - 1rem);
-	margin-left: 1rem;
-	margin-bottom: 1rem;
-}
-
-.field.field-entry_relationship fieldset.single > div.search {
-	display: inline-flex;
-	position: relative;
-	max-width: 250px;
-	min-width: 200px;
-}
-
-.field.field-entry_relationship .suggestions {
-	width: auto;
-	text-align: left;
-	left: 1rem;
-	right: 0;
-	top: 2.5rem;
-}*/
-
-.field.field-entry_relationship {
-	/*--primary-field-background-color: var(--color-accent-lighter);*/
-}
-
-[id="primary"] {
-	/*scroll-behavior: smooth;*/
+:root {
+	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2 + .4em);
 }
 
 .field.field-entry_relationship>.frame,
 .field.field-entry_relationship>.frame>ul,
 .field.field-entry_relationship>.frame>ul>li {
-	background-color: inherit;
-	border-color: inherit;
+	/*background-color: inherit;*/
+	/*border-color: inherit;*/
 }
 
 
 
 .field.field-entry_relationship>label>span {
-	/*font-weight: 400;*/
-	z-index: 2;
-	position: relative;
 	color: var(--standard-input-color);
 }
 
 .field.field-entry_relationship li {
 	margin: 0;
 	width: auto;
-	transition: margin 120ms cubic-bezier(0.77, 0, 0.175, 1);
+	transition: margin 80ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .field.field-entry_relationship li.ctn-is-shown {
-	border-style: solid;
-	border-width: 1px;
-}
-
-html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[id="entry-relationship-ctn"] {
-	/*position: relative;*/
-	/*z-index: 1;*/
-	margin-left: calc(-1 * var(--standard-outer-rhythm));
-	margin-right: calc(-1 * var(--standard-outer-rhythm));
+	color: var(--color-accent);
+	z-index: 1;
 }
 
 .field.field-entry_relationship .ctn-is-shown~* {
 	position: initial;
 }
 
-.field.field-entry_relationship li.ctn-is-loaded .frame-header {
-	pointer-events: none;
-	padding: 0;
-	/*background-color: var(--color-clear);*/
-	z-index: 1;
+.field.field-entry_relationship li.ctn-is-shown:not(.ctn-is-loaded) .frame-header:after {
+	content: url("data:image/svg+xml,%3Csvg version='1.1' id='L4' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'%3E%3Ccircle fill='blue' stroke='none' cx='6' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.1'/%3E%3C/circle%3E%3Ccircle fill='blue' stroke='none' cx='26' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.2'/%3E%3C/circle%3E%3Ccircle fill='blue' stroke='none' cx='46' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.3'/%3E%3C/circle%3E%3C/svg%3E");
+	width: 40px;
+	height: 40px;
 	display: block;
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-.field.field-entry_relationship li.ctn-is-loaded .frame-header>* {
+.field.field-entry_relationship li.ctn-is-loaded {
+	box-shadow: var(--shadow-up);
+	border-style: solid;
+	/*border-bottom: 2px solid var(--color-main-lighter);*/
+}
+
+.field.field-entry_relationship li.ctn-is-shown .frame-header {
+	pointer-events: none;
+	/*padding: 0;*/
+	z-index: 1;
+	/*display: block;*/
+}
+
+/*.field.field-entry_relationship li.ctn-is-loaded .frame-header>* {
 	padding: var(--standard-inner-rhythm);
 }
 
@@ -218,43 +70,61 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
-}
+}*/
 
 .field.field-entry_relationship li.ctn-is-shown .destructor {
 	opacity: 0;
 	pointer-events: none;
 }
 
-.field.field-entry_relationship .ctn-is-shown:after {
-	/*content: "";*/
+.field.field-entry_relationship .ctn-is-loaded:after {
+	content: "";
 	position: absolute;
 	pointer-events: none;
-	top: -2px;
-	right: -2px;
-	bottom: -2px;
-	left: -2px;
-	border: 4px solid var(--color-accent-light);
-	border-radius: var(--radius-small);
+	top: -1px;
+	right: -3px;
+	bottom: -1px;
+	left: -3px;
+	border: 3px solid transparent;
+	border-radius: 2px;
 	z-index: 1;
 }
 
-.field.field-entry_relationship .ctn-is-shown:before {
-	/*content: "";*/
+.field.field-entry_relationship .ctn-is-loaded:after,
+.field.field-entry_relationship .ctn-is-loaded:before {
+	transition: all 200ms ease-in 800ms;
+}
+
+.field.field-entry_relationship .ctn-is-loaded:hover:before,
+.field.field-entry_relationship .ctn-is-loaded:hover:after {
+	transition-delay: 0ms;
+}
+
+
+.field.field-entry_relationship .ctn-is-loaded:before {
+	content: "";
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--frontframe-background-color);
+	background-color: var(--color-main-lightest);
 	opacity: 0;
 	pointer-events: none;
-	mix-blend-mode: exclusion;
-	transition: opacity 100ms ease-in;
+	z-index: -1;
+	/*mix-blend-mode: difference;*/
 }
 
-.field.field-entry_relationship .ctn-is-shown.ctn-is-loaded:before {
-	opacity: .1;
-	
+
+
+.field.field-entry_relationship .ctn-is-loaded:not(:hover):before {
+	opacity: .8;
+	transition-duration: 800ms;
+}
+
+
+.field.field-entry_relationship .ctn-is-loaded:not(:hover):after {
+	/*border-color: var(--color-accent);*/
 }
 
 .field.field-entry_relationship label {
@@ -275,8 +145,15 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 
 .field-entry_relationship .frame>ul {
 	margin: 0;
-	/*border-top: 1px dashed var(--color-ui);*/
-	/*border-bottom: 1px dashed var(--color-ui);*/
+	border-top: 1px dashed var(--color-ui);
+	border-bottom: 1px dashed var(--color-ui);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.field-entry_relationship .frame>ul>li {
+	box-sizing: inherit;
+	width: inherit;
 }
 
 .field-entry_relationship .frame>ul>li+li {
@@ -285,6 +162,9 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 
 .field-entry_relationship .frame .frame-header {
 	padding: var(--standard-inner-rhythm);
+	position: relative;
+	height: var(--er-field-header-height);
+	box-sizing: border-box;
 }
 
 
@@ -309,60 +189,26 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 	flex-shrink: 0;
 }
 
-
-/**
- * CSS for entry relationship field in tab group
- */
-/*.column.secondary .field.field-entry_relationship .single > div > div,
-.tab-group:nth-child(n + 2) .field.field-entry_relationship .single > div > div {
-	justify-content: flex-end;
-	margin-bottom: 1rem;
-	width: 100%;
-}
-
-.column.secondary .field.field-entry_relationship .frame-header,
-.tab-group:nth-child(n + 2) .field.field-entry_relationship .frame-header {
-	flex-direction: column;
-	align-items: flex-end;
-}
-
-.column.secondary .field.field-entry_relationship .frame-header h4,
-.tab-group:nth-child(n + 2) .field.field-entry_relationship .frame-header h4 {
-	display: block;
-	text-align: right;
-}
-*/
-
 /**
  * CSS for entry relationship field iframe
  */
 #entry-relationship-ctn {
-	/*overflow: hidden;*/
-	/*position: fixed;*/
-	/*z-index: 10000;*/
-	/*top: 0;*/
-	/*left: 0;*/
-	/*bottom: 0;*/
-	/*right: 0;*/
 	pointer-events: none;
 	background-color: var(--color-clear);
-	/*position: relative;*/
-	/*z-index: 1;*/
 }
 
 #entry-relationship-ctn.show {
 	pointer-events: all;
 }
 
+li>#entry-relationship-ctn > .iframe {
+	margin-top: calc(-1 * var(--er-field-header-height));
+	min-height: var(--er-field-header-height);
+}
+
 #entry-relationship-ctn > .iframe {
 	transition: opacity 100ms ease-out;
-	/*box-sizing: border-box;*/
-	/*position: absolute;*/
-	/*top: 0;*/
-	/*left: 0;*/
-	/*background-color: #fff;*/
 	width: 100%;
-	/*height: 100%;*/
 	opacity: 0;
 }
 
@@ -374,10 +220,9 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 #entry-relationship-ctn iframe {
 	display: block;
 	width: inherit;
-	transition: height 200ms ease-out;
+	transition: height 0ms cubic-bezier(0.77, 0, 0.175, 1);
 	height: 0;
 	opacity: 1;
-	max-height: 70vh;
 }
 
 #entry-relationship-ctn.show .iframe:after {
@@ -401,28 +246,6 @@ html:not(.entry_relationship) .field.field-entry_relationship ul.ctn-is-shown>[i
 	height: 0px;
 }
 
-li>#entry-relationship-ctn .iframe.loaded iframe {
-	/*height: var(--spacing-broader);*/
-	/*margin-top: calc(-1 * var(--standard-inner-rhythm) * 2 - 1.2em);*/
-}
-
-/**
- * CSS for entry relationship field page customization
- */
-
-/*html.no-scroll {
-	overflow: hidden;
-}*/
-
-/*body.entry_relationship {
-	padding-left: 0;
-}
-
-body.entry_relationship #contents .actions > *:nth-child(n + 2),
-body.entry_relationship .notifier {
-	display: none;
-}
-*/
 
 html.entry_relationship {
 	--backframe-background-color: var(--color-clear);
@@ -430,6 +253,9 @@ html.entry_relationship {
 	--standard-field-max-width: 100%;
 	--radius-current: 0;
 	--standard-outer-rhythm: 0;
+	/*--standard-input-color: var(--color-clear);*/
+	/*--primary-field-background-color: var(--color-main-light);*/
+	/*--secondary-field-background-color: var(--color-main-light);*/
 	
 	font-size: 62.5%;
 
@@ -441,27 +267,96 @@ html.entry_relationship body {
 	flex-direction: column;
 }
 
-html.entry_relationship body:after {
+
+#entry-relationship-ctn:after,
+#entry-relationship-ctn .iframe:before {
 	content: "";
-	position: fixed;
-	top: calc(var(--standard-inner-rhythm) * 2 + 2.1em);
+	position: absolute;
+	box-sizing: border-box;
 	pointer-events: none;
 	right: 0;
 	bottom: 0;
+	top: 0;
 	left: 0;
-	box-shadow: inset 0px 0px 2px 1px var(--color-main-lighter),
-					inset 0px 0px 10px 0px var(--color-main-lighter);
+	opacity: 0;
+	transition: all 800ms ease-in 1400ms;
+	z-index: 10;
+	top: var(--er-field-header-height);
+}
+
+#entry-relationship-ctn .iframe.loaded:before {
+	border-bottom: 1px solid var(--color-accent-light);
+
+	box-shadow: inset 0px 0px 10px 0px var(--color-main-lighter);
+}
+
+#entry-relationship-ctn.show:not(:hover):before {
+	/*opacity: .85;*/
+}
+
+#entry-relationship-ctn.show:not(:hover):after {
+	color: var(--color-clear);
+	border-color: var(--color-main-light);
+	background-color: #0D6EFFA0;
+	/*opacity: 1;*/
+
+}
+
+#entry-relationship-ctn.show:hover:before,
+#entry-relationship-ctn.show:hover:after {
+	transition-duration: 120ms;
+	transition-delay: 0ms;
+}
+
+html:lang(en) #entry-relationship-ctn.show:after {
+	content: "Please save your changes or close the panel to proceed.";
+}
+
+html:lang(fr) #entry-relationship-ctn.show:after {
+	content: "Veuillez sauvegarder vos changements ou fermer le panneau pour continuer.";
+}
+
+
+#entry-relationship-ctn:after {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	padding: var(--spacing-large);
+	
+	color: transparent;
+	font-size: var(--text-biggest);
+	font-weight: 600;
+	text-align: center;
+	line-height: 1.2em;
+	border-bottom: 1px solid var(--color-accent-light);
+}
+
+html.entry_relationship .field {
+	border-left: 0;
+	border-right: 0;
 }
 
 html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
 	content: "New Entry";
 }
 
-html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
+html:lang(fr).entry_relationship body[data-page="new"] [id="controls"]:before {
 	content: "Nouvelle entrée";
 }
 
-html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
+
+html:lang(en).entry_relationship body[data-page="index"] [id="controls"]:before {
+	content: "Choose an entry to be added";
+}
+
+html:lang(fr).entry_relationship body[data-page="index"] [id="controls"]:before {
+	content: "Choisissez une entrée à ajouter";
+}
+
+html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before,
+html:lang(en).entry_relationship body[data-page="index"] [id="controls"]:before {
 	margin-right: auto;
 	font-weight: 740;
 	color: var(--color-accent);
@@ -470,8 +365,8 @@ html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
 html.entry_relationship [id="controls"] {
 	order: -1;
 	border-top: 0;
-	border-bottom: 1px solid var(--color-ui);
-	padding: calc(var(--standard-inner-rhythm) / 2) 0;
+	border-bottom: 1px solid var(--color-main-lighter);
+	padding: calc(var(--standard-inner-rhythm) / 2) var(--standard-inner-rhythm);
 	margin: 0;
 	position: sticky;
 	top: 0;
@@ -484,14 +379,6 @@ html.entry_relationship [id="contents"]>form>* {
 
 html.entry_relationship button[name="action[save]"] {
 	margin-right: var(--spacing-micro);
-}
-
-html.entry_relationship button[name="action[save]"]:after {
-	/*left: 100%;*/
-	/*right: auto;*/
-	/*margin-right: auto;*/
-	/*margin-left: var(--spacing-micro);*/
-
 }
 
 html.entry_relationship button[name="action[close]"]:after {
@@ -515,10 +402,6 @@ html.entry_relationship .actions .apply {
 	display: none;
 }
 
-/*html.entry_relationship .notifier {
-	display: none !important;
-}*/
-
 html.entry_relationship {
 	scrollbar-color: transparent transparent;
 	scrollbar-width: 0px;
@@ -533,9 +416,4 @@ html.entry_relationship::-webkit-scrollbar {
 html.entry_relationship:hover {
 	scrollbar-color: var(--scrollbar-thumb-background-color) transparent;
 
-}
-
-html.entry_relationship::-webkit-scrollbar-thumb {
-	/*background-color: var(--scrollbar-thumb-background-color);*/
-	/*border-radius: var(--scrollbar-thumb-border-radius);*/
 }

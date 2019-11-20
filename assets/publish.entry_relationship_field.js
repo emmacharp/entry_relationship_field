@@ -7,6 +7,38 @@
  * JS for entry relationship field
  */
 
+  /* iframe Bubbling Behavior */
+  (function ($, undefined) {
+
+  	'use strict';
+
+  	const iframeBubbleActions = {
+  		calculate: () => {
+  			const iframe = $('#entry-relationship-ctn iframe');
+  			const iframe_body = iframe.get(0).contentWindow.document.body;
+
+ 			$(iframe, window.self.document).height($(iframe_body).outerHeight() + 'px');
+  			console.log($('#entry-relationship-ctn iframe', window.self.document).attr('src'), $(iframe_body).outerHeight(), window.self);
+  		}
+  	};
+
+  	window.iframeBubble = (action) => {
+  		if (!!iframeBubbleActions['calculate']) {
+  			// debugger;
+
+  			iframeBubbleActions['calculate']();
+  		}
+
+  		if (window.self != window.top) {
+  			// debugger;
+  			console.log('pas top');
+  			window.parent.iframeBubble(action);
+  		}
+  	};
+
+
+  })(jQuery);
+
 /* Publish page customization */
 (function ($, S) {
 
@@ -139,12 +171,12 @@
 						i$(iw).trigger('beforeunload').trigger('unload');
 					}
 					$(this).removeAttr('style');
-					$(this).on('transitionend', function(){
+					// $(this).on('transitionend', function(){
 						// remove iframe
 						$(this).empty().remove();
 						html.removeClass('no-scroll');
 						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
-					});
+					// });
 				});
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 					window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(-1);
@@ -164,12 +196,11 @@
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
 					ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
-					ctn.find('iframe').removeAttr('style src').on('transitionend', function(){
-						ctn.empty().append(ictn);
-						if(!!ctnParent) {
-							ctnParent.append(ctn).addClass('ctn-is-shown');
-						}
-					});
+					ctn.find('iframe').removeAttr('style src');
+					ctn.empty().append(ictn);
+					if(!!ctnParent) {
+						ctnParent.append(ctn).addClass('ctn-is-shown');
+					}
 				} else {
 					ctn.empty().append(ictn);
 					if(!!ctnParent) {
@@ -186,25 +217,16 @@
 					}
 
 					$(iframe.get(0).contentWindow).on('load', function() {
-						iframe.get(0).style.height = $(iframe.get(0).contentWindow.document.body).outerHeight() + "px";
-						$(iframe).closest('.iframe').addClass('loaded');
-						ctnParent.addClass('ctn-is-loaded');
-
-						iframe.on('transitionend', function() {
-
-							var context_height = S.Elements.context.outerHeight();
-							var outer_margin = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(document.documentElement).fontSize); 
-							var actual_primary_scroll = S.Elements.primary.scrollTop();
-							var ctn_offset = ctnParent.offset().top;
-
-
-							var new_scroll_position = actual_primary_scroll + ctn_offset;
-
-							// If EntryRelationship is present in frame, let render() do the scrolling;
-							// if(!window.self.Symphony.Extensions.EntryRelationship) {
-								S.Elements.primary.scrollTop(S.Elements.primary.scrollTop() + ctnParent.offset().top - context_height - outer_margin);
-							// }
-						});
+						// debugger;
+						// console.log();
+						// If EntryRelationship is present in frame, let render() do the sizing;
+						if(window.self == window.top || !iframe.get(0).contentWindow.Symphony.Elements.contents.find('.field-entry_relationship').length) {
+							console.log('allo');
+							window.iframeBubble('calculate');
+							// iframe.get(0).style.height = $(iframe.get(0).contentWindow.document.body).outerHeight() + 'px';
+							$(iframe).closest('.iframe').addClass('loaded');
+							ctnParent.addClass('ctn-is-loaded');
+						}
 
 					});
 				});
@@ -423,7 +445,7 @@
 		var insertPosition;
 		var storageKeys = {
 			selection: 'symphony.ERF.section-selection-' + id,
-			collapsible: 'symphony.collapsible.ERF.' + id + '.collasped'
+			collapsible: 'symphony.collapsible.ERF.' + id + '.collapsed'
 		};
 		var values = function () {
 			var val = hidden.val() || '';
@@ -535,7 +557,11 @@
 
 					// Recalculate frame parent height when entries are rendered
 					if(window.self != window.top) {
-						$('#entry-relationship-ctn iframe', window.parent.document).height($(window.document.body).outerHeight() + 'px');
+						// debugger;
+						window.parent.iframeBubble('calculate');
+						$('#entry-relationship-ctn iframe', window.parent.document).closest('.iframe').addClass('loaded');
+						$('#entry-relationship-ctn', window.parent.document).parent().addClass('ctn-is-loaded');
+						// $('#entry-relationship-ctn iframe', window.parent.document).height($(window.document.body).outerHeight() + 'px');
 					}
 				}
 			}).error(function (data) {
