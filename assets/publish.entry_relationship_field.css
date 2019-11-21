@@ -4,7 +4,7 @@
 */
 
 :root {
-	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2 + .4em);
+	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2);
 }
 
 .field.field-entry_relationship>.frame,
@@ -14,7 +14,9 @@
 	/*border-color: inherit;*/
 }
 
-
+.field.field-entry_relationship:focus-within {
+	background-color: var(--standard-field-background-color);
+}
 
 .field.field-entry_relationship>label>span {
 	color: var(--standard-input-color);
@@ -36,9 +38,9 @@
 }
 
 .field.field-entry_relationship li.ctn-is-shown:not(.ctn-is-loaded) .frame-header:after {
-	content: url("data:image/svg+xml,%3Csvg version='1.1' id='L4' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'%3E%3Ccircle fill='blue' stroke='none' cx='6' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.1'/%3E%3C/circle%3E%3Ccircle fill='blue' stroke='none' cx='26' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.2'/%3E%3C/circle%3E%3Ccircle fill='blue' stroke='none' cx='46' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.3'/%3E%3C/circle%3E%3C/svg%3E");
-	width: 40px;
-	height: 40px;
+	content: url("data:image/svg+xml,%3Csvg version='1.1' id='L4' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='6' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.1'/%3E%3C/circle%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='26' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.2'/%3E%3C/circle%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='46' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.3'/%3E%3C/circle%3E%3C/svg%3E");
+	width: 60px;
+	height: 60px;
 	display: block;
 	position: absolute;
 	z-index: 1;
@@ -47,30 +49,62 @@
 	transform: translateY(-50%);
 }
 
+.field.field-entry_relationship .ctn-is-loaded {
+	position: static;
+}
+
 .field.field-entry_relationship li.ctn-is-loaded {
-	box-shadow: var(--shadow-up);
 	border-style: solid;
-	/*border-bottom: 2px solid var(--color-main-lighter);*/
+}
+
+.field.field-entry_relationship .ctn-is-loaded>.frame-header,
+.field.field-entry_relationship .ctn-is-loaded>[id="entry-relationship-ctn"] {
+	z-index: 1;
 }
 
 .field.field-entry_relationship li.ctn-is-shown .frame-header {
 	pointer-events: none;
-	/*padding: 0;*/
+	z-index: 2;
+}
+
+.field.field-entry_relationship li.ctn-is-loaded .frame-header {
+	box-shadow: var(--shadow-small);
+}
+
+.field.field-entry_relationship .frame-header .destructor {
+	width: 0;
+	flex-basis: 2em;
+	flex-shrink: 0;
+	white-space: nowrap;
+	text-align: right;
+	display: inline-flex;
+	flex-flow: row-reverse;
 	z-index: 1;
-	/*display: block;*/
 }
 
-/*.field.field-entry_relationship li.ctn-is-loaded .frame-header>* {
-	padding: var(--standard-inner-rhythm);
+.field.field-entry_relationship .frame-header .destructor:before {
+	content: "+";
+	margin-left: var(--spacing-micro);
 }
 
-.field.field-entry_relationship li.ctn-is-loaded .frame-header>*:first-child {
-	margin-bottom: -100%;
-	min-height: calc(var(--standard-inner-rhythm) * 2 + 2.1em);
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-}*/
+.field.field-entry_relationship .ctn-is-shown .frame-header span {
+	opacity: 0;
+}
+
+.field.field-entry_relationship .frame-header .destructor a:not(:hover) {
+	color: var(--standard-label-color);
+}
+
+.field.field-entry_relationship .frame-header .destructor>a {
+	margin: 0;
+	padding: 0 var(--spacing-micro);
+	background-color: var(--standard-field-background-color);
+}
+
+.field.field-entry_relationship .frame-header .destructor:not(:hover)>a {
+	opacity: 0;
+	pointer-events: none;
+}
 
 .field.field-entry_relationship li.ctn-is-shown .destructor {
 	opacity: 0;
@@ -81,25 +115,36 @@
 	content: "";
 	position: absolute;
 	pointer-events: none;
-	top: -1px;
-	right: -3px;
-	bottom: -1px;
-	left: -3px;
-	border: 3px solid transparent;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	/*border: 1px solid var(--color-ui);*/
 	border-radius: 2px;
 	z-index: 1;
 }
 
-.field.field-entry_relationship .ctn-is-loaded:after,
-.field.field-entry_relationship .ctn-is-loaded:before {
-	transition: all 200ms ease-in 800ms;
+.field.field-entry_relationship .ctn-is-loaded:after {
+	transition: all 200ms ease-in 600ms;
 }
 
-.field.field-entry_relationship .ctn-is-loaded:hover:before,
+
 .field.field-entry_relationship .ctn-is-loaded:hover:after {
 	transition-delay: 0ms;
 }
 
+
+html.not-allowed [id="primary"]>*:first-child:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: auto;
+	z-index: 1;
+	cursor: not-allowed;
+}
 
 .field.field-entry_relationship .ctn-is-loaded:before {
 	content: "";
@@ -108,23 +153,17 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--color-main-lightest);
 	opacity: 0;
+	transition: all 200ms ease-in 600ms;
+	background-color: var(--color-main-lightest);
 	pointer-events: none;
-	z-index: -1;
-	/*mix-blend-mode: difference;*/
+	mix-blend-mode: screen;
+	z-index: 1;
 }
 
-
-
-.field.field-entry_relationship .ctn-is-loaded:not(:hover):before {
-	opacity: .8;
-	transition-duration: 800ms;
-}
-
-
-.field.field-entry_relationship .ctn-is-loaded:not(:hover):after {
-	/*border-color: var(--color-accent);*/
+html:hover .field.field-entry_relationship .ctn-is-loaded:not(:hover):before {
+	opacity: .6;
+	transition-duration: 600ms;
 }
 
 .field.field-entry_relationship label {
@@ -145,19 +184,27 @@
 
 .field-entry_relationship .frame>ul {
 	margin: 0;
-	border-top: 1px dashed var(--color-ui);
-	border-bottom: 1px dashed var(--color-ui);
 	box-sizing: border-box;
 	width: 100%;
 }
 
 .field-entry_relationship .frame>ul>li {
+	border-style: dashed;
+	border-color: var(--color-ui);
 	box-sizing: inherit;
 	width: inherit;
 }
 
+.field-entry_relationship .frame>ul>li:first-child {
+	border-top-width: 1px;
+}
+
+.field-entry_relationship .frame>ul>li:last-child {
+	border-bottom-width: 1px;
+}
+
 .field-entry_relationship .frame>ul>li+li {
-	border-top: 1px dashed var(--color-ui);
+	border-top-width: 1px;
 }
 
 .field-entry_relationship .frame .frame-header {
@@ -167,12 +214,43 @@
 	box-sizing: border-box;
 }
 
+.field-entry_relationship .frame .frame-header>:first-child {
+	flex-grow: 1;
+	display: flex;
+	justify-content: space-between;
+}
+
+.field-entry_relationship>footer:not(:hover) {
+	opacity: .5;
+}
 
 .field-entry_relationship>footer {
 	display: flex;
 	align-items: baseline;
-	/*background-color: var(--color-accent-lighter);*/
+	/*background-color: rgba(0,0,0,.2);*/
+	padding: 0 var(--standard-inner-rhythm);
 	border-radius: inherit;
+	--standard-field-font-size: var(--text-smaller);
+	--standard-label-font-size: var(--text-smaller);
+}
+
+.field-entry_relationship input,
+.field-entry_relationship select,
+.field-entry_relationship textarea {
+	font-weight: 540;
+	color: var(--color-main-dark);
+}
+
+.field-entry_relationship button {
+	margin: 0;
+}
+
+.field-entry_relationship>footer>fieldset>*+* {
+	margin-left: var(--standard-inner-rhythm);
+}
+
+.field-entry_relationship>footer>fieldset>*>* {
+	margin: 0;
 }
 
 .field-entry_relationship>footer>fieldset {
@@ -192,24 +270,26 @@
 /**
  * CSS for entry relationship field iframe
  */
-#entry-relationship-ctn {
-	pointer-events: none;
-	background-color: var(--color-clear);
-}
+ #entry-relationship-ctn {
+ 	pointer-events: none;
+ 	background-color: var(--color-clear);
+ }
 
-#entry-relationship-ctn.show {
-	pointer-events: all;
-}
+ #entry-relationship-ctn.show {
+ 	pointer-events: all;
+ 	position: relative;
+ }
 
-li>#entry-relationship-ctn > .iframe {
-	margin-top: calc(-1 * var(--er-field-header-height));
-	min-height: var(--er-field-header-height);
-}
+ li>#entry-relationship-ctn > .iframe {
+ 	margin-top: calc(-1 * var(--er-field-header-height));
+ 	min-height: var(--er-field-header-height);
+ }
 
 #entry-relationship-ctn > .iframe {
 	transition: opacity 100ms ease-out;
 	width: 100%;
 	opacity: 0;
+	margin-top: -1px;
 }
 
 #entry-relationship-ctn.show > .iframe {
@@ -253,9 +333,10 @@ html.entry_relationship {
 	--standard-field-max-width: 100%;
 	--radius-current: 0;
 	--standard-outer-rhythm: 0;
+	--standard-input-color: var(--color-main-dark);
+	--standard-label-color: var(--color-main-dark);
 	/*--standard-input-color: var(--color-clear);*/
-	/*--primary-field-background-color: var(--color-main-light);*/
-	/*--secondary-field-background-color: var(--color-main-light);*/
+
 	
 	font-size: 62.5%;
 
@@ -265,9 +346,16 @@ html.entry_relationship {
 html.entry_relationship body {
 	display: flex;
 	flex-direction: column;
+	min-height: max-content;
+	max-height: max-content;
+}
+
+html.entry_relationship [id="primary"] {
+	overflow: visible;
 }
 
 
+#entry-relationship-ctn:before,
 #entry-relationship-ctn:after,
 #entry-relationship-ctn .iframe:before {
 	content: "";
@@ -279,31 +367,39 @@ html.entry_relationship body {
 	top: 0;
 	left: 0;
 	opacity: 0;
-	transition: all 800ms ease-in 1400ms;
-	z-index: 10;
+	transition: opacity 200ms ease-in-out;
 	top: var(--er-field-header-height);
+	display: block;
 }
 
 #entry-relationship-ctn .iframe.loaded:before {
-	border-bottom: 1px solid var(--color-accent-light);
-
-	box-shadow: inset 0px 0px 10px 0px var(--color-main-lighter);
+	border-bottom: 2px solid var(--color-accent);
+	box-shadow: inset var(--shadow-up);
+	opacity: 1;
+	mix-blend-mode: multiply;
 }
 
-#entry-relationship-ctn.show:not(:hover):before {
-	/*opacity: .85;*/
+#entry-relationship-ctn:before,
+#entry-relationship-ctn:after {
+	transition: opacity 500ms ease-in-out 800ms;
+	z-index: 1;
 }
 
-#entry-relationship-ctn.show:not(:hover):after {
-	color: var(--color-clear);
-	border-color: var(--color-main-light);
-	background-color: #0D6EFFA0;
-	/*opacity: 1;*/
+/*html:hover #entry-relationship-ctn.show:not(:hover):before {
+	opacity: .85;
+}
+*/
 
+#entry-relationship-ctn:before {
+	background-color: var(--color-main);
 }
 
-#entry-relationship-ctn.show:hover:before,
-#entry-relationship-ctn.show:hover:after {
+html:hover .ctn-is-loaded #entry-relationship-ctn.show:not(:hover):before {
+	opacity: .85;
+}
+
+html:hover .ctn-is-loaded #entry-relationship-ctn.show:hover:before,
+html:hover .ctn-is-loaded #entry-relationship-ctn.show:hover:after {
 	transition-duration: 120ms;
 	transition-delay: 0ms;
 }
@@ -318,25 +414,35 @@ html:lang(fr) #entry-relationship-ctn.show:after {
 
 
 #entry-relationship-ctn:after {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-
-	padding: var(--spacing-large);
-	
-	color: transparent;
 	font-size: var(--text-biggest);
 	font-weight: 600;
 	text-align: center;
 	line-height: 1.2em;
-	border-bottom: 1px solid var(--color-accent-light);
+	max-width: 20em;
+	text-align: center;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	color: var(--color-clear);
+}
+
+html:hover .ctn-is-loaded #entry-relationship-ctn.show:not(:hover):after {
+	opacity: 1;
 }
 
 html.entry_relationship .field {
 	border-left: 0;
 	border-right: 0;
 }
+
+html.entry_relationship .field {
+	--standard-field-background-color: var(--color-ui);
+}
+
+html.entry_relationship .field:hover {
+	--standard-field-background-color: var(--color-accent-lighter);
+}
+
 
 html:lang(en).entry_relationship body[data-page="new"] [id="controls"]:before {
 	content: "New Entry";
@@ -360,17 +466,22 @@ html:lang(en).entry_relationship body[data-page="index"] [id="controls"]:before 
 	margin-right: auto;
 	font-weight: 740;
 	color: var(--color-accent);
+	order: -1;
 }
 
 html.entry_relationship [id="controls"] {
 	order: -1;
-	border-top: 0;
-	border-bottom: 1px solid var(--color-main-lighter);
+	border-top: 1px solid var(--color-main-lighter);
+	border-bottom: 2px solid var(--color-accent);
 	padding: calc(var(--standard-inner-rhythm) / 2) var(--standard-inner-rhythm);
 	margin: 0;
 	position: sticky;
 	top: 0;
+	height: var(--er-field-header-height);
+	box-sizing: border-box;
 	justify-content: flex-end;
+	background-color: var(--color-accent-lighter);
+	background-image: linear-gradient(to top, rgba(255,255,255,.4), rgba(255,255,255,.4) 100%);
 }
 
 html.entry_relationship [id="contents"]>form>* {
@@ -379,6 +490,10 @@ html.entry_relationship [id="contents"]>form>* {
 
 html.entry_relationship button[name="action[save]"] {
 	margin-right: var(--spacing-micro);
+}
+
+html.entry_relationship button[name="action[close]"] {
+	zoom: .75;
 }
 
 html.entry_relationship button[name="action[close]"]:after {
@@ -405,6 +520,11 @@ html.entry_relationship .actions .apply {
 html.entry_relationship {
 	scrollbar-color: transparent transparent;
 	scrollbar-width: 0px;
+	overflow: visible;
+}
+
+* {
+	box-sizing: border-box !important;
 }
 
 html.entry_relationship::-webkit-scrollbar {

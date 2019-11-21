@@ -1147,6 +1147,18 @@
 			if (empty($actionBar)) {
 				$fieldset = new XMLElement('fieldset');
 
+				if ($this->is('allow_new') || $this->is('allow_link') || $this->is('allow_search')) {
+					$selectWrap = new XMLElement('section');
+					$selectWrap->appendChild(new XMLElement('legend', __('Related section: '), array('class' => 'sections-selection')));
+					$options = array();
+					foreach ($sections as $section) {
+						$options[] = array($section->get('handle'), false, $section->get('name'));
+					}
+					$select = Widget::Select('', $options, array('class' => 'sections sections-selection'));
+					$selectWrap->appendChild($select);
+					$fieldset->appendChild($selectWrap);
+				}
+				
 				if ($this->is('allow_search')) {
 					$searchWrap = new XMLElement('section');
 					$searchWrap->setAttribute('data-interactive', 'data-interactive');
@@ -1163,17 +1175,6 @@
 					$fieldset->appendChild($searchWrap);
 				}
 
-				if ($this->is('allow_new') || $this->is('allow_link') || $this->is('allow_search')) {
-					$selectWrap = new XMLElement('section');
-					$selectWrap->appendChild(new XMLElement('span', __('Related section: '), array('class' => 'sections-selection')));
-					$options = array();
-					foreach ($sections as $section) {
-						$options[] = array($section->get('handle'), false, $section->get('name'));
-					}
-					$select = Widget::Select('', $options, array('class' => 'sections sections-selection'));
-					$selectWrap->appendChild($select);
-					$fieldset->appendChild($selectWrap);
-				}
 				if ($this->is('allow_new')) {
 					$fieldset->appendChild(new XMLElement('button', __('Create new'), array(
 						'type' => 'button',

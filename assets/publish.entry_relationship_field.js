@@ -174,12 +174,13 @@
 					// $(this).on('transitionend', function(){
 						// remove iframe
 						$(this).empty().remove();
-						html.removeClass('no-scroll');
+						html.removeClass('not-allowed');
 						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
 					// });
 				});
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 					window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(-1);
+					window.parent.iframeBubble('calculate');
 				}
 				if (reRender) {
 					self.current.render();
@@ -191,7 +192,7 @@
 				var ictn = $('<div />').attr('class', 'iframe');
 				var iframe = $('<iframe />').attr('src', url);
 
-				html.addClass('no-scroll');
+				html.addClass('not-allowed');
 				ictn.append(iframe);
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
@@ -218,9 +219,11 @@
 
 					$(iframe.get(0).contentWindow).on('load', function() {
 						// debugger;
-						// console.log();
+						// console.log(iframe.get(0).contentWindow.Symphony.Elements.contents);
 						// If EntryRelationship is present in frame, let render() do the sizing;
-						if(window.self == window.top || !iframe.get(0).contentWindow.Symphony.Elements.contents.find('.field-entry_relationship').length) {
+						const iframe_body = iframe.get(0).contentWindow.document.body;
+
+						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship').length) {
 							console.log('allo');
 							window.iframeBubble('calculate');
 							// iframe.get(0).style.height = $(iframe.get(0).contentWindow.document.body).outerHeight() + 'px';
