@@ -7,37 +7,32 @@
  * JS for entry relationship field
  */
 
-  /* iframe Bubbling Behavior */
-  (function ($, undefined) {
+/* iframe Bubbling Behavior */
+(function ($, undefined) {
 
-  	'use strict';
+	'use strict';
 
-  	const iframeBubbleActions = {
-  		calculate: () => {
-  			const iframe = $('#entry-relationship-ctn iframe');
-  			const iframe_body = iframe.get(0).contentWindow.document.body;
+	const iframeBubbleActions = {
+		calculate: () => {
+			const iframe = $('#entry-relationship-ctn iframe');
+			const iframe_body = iframe.get(0).contentWindow.document.body;
 
  			$(iframe, window.self.document).height($(iframe_body).outerHeight() + 'px');
-  			console.log($('#entry-relationship-ctn iframe', window.self.document).attr('src'), $(iframe_body).outerHeight(), window.self);
-  		}
-  	};
+		}
+	};
 
-  	window.iframeBubble = (action) => {
-  		if (!!iframeBubbleActions['calculate']) {
-  			// debugger;
+	window.iframeBubble = (action) => {
+		if (!!iframeBubbleActions['calculate']) {
+			iframeBubbleActions['calculate']();
+		}
 
-  			iframeBubbleActions['calculate']();
-  		}
-
-  		if (window.self != window.top) {
-  			// debugger;
-  			console.log('pas top');
-  			window.parent.iframeBubble(action);
-  		}
-  	};
+		if (window.self != window.top) {
+			window.parent.iframeBubble(action);
+		}
+	};
 
 
-  })(jQuery);
+})(jQuery);
 
 /* Publish page customization */
 (function ($, S) {
@@ -163,21 +158,24 @@
 	var defineExternals = function () {
 		var self = {
 			hide: function (reRender) {
-				ctn.removeClass('show').find('.iframe>iframe').fadeOut(1, function () {
+				// ctn.removeClass('show').find('.iframe>iframe').fadeOut(1, function () {
+					ctn.find('.iframe').removeClass('loaded');
 					// raise unload events
-					var iw = this.contentWindow;
+					var i = ctn.find('.iframe>iframe');
+					// debugger;
+					var iw = i.get(0).contentWindow;
 					var i$ = iw.jQuery;
 					if (!!i$) {
 						i$(iw).trigger('beforeunload').trigger('unload');
 					}
-					$(this).removeAttr('style');
-					// $(this).on('transitionend', function(){
-						// remove iframe
-						$(this).empty().remove();
-						html.removeClass('not-allowed');
-						ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
-					// });
-				});
+					
+					ctn.removeClass('show').closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
+					i.removeAttr('style');
+					html.removeClass('not-allowed');
+					// remove iframe
+					i.empty().remove();
+
+				// });
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
 					window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(-1);
 					window.parent.iframeBubble('calculate');
@@ -218,15 +216,13 @@
 					}
 
 					$(iframe.get(0).contentWindow).on('load', function() {
-						// debugger;
-						// console.log(iframe.get(0).contentWindow.Symphony.Elements.contents);
-						// If EntryRelationship is present in frame, let render() do the sizing;
 						const iframe_body = iframe.get(0).contentWindow.document.body;
-
+						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
+							ctn.find('.iframe').removeClass('loaded').closest('.ctn-is-loaded');
+						});
+						// If EntryRelationship is present in iframe, let render() do the sizing on Edit pages;
 						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship').length) {
-							console.log('allo');
 							window.iframeBubble('calculate');
-							// iframe.get(0).style.height = $(iframe.get(0).contentWindow.document.body).outerHeight() + 'px';
 							$(iframe).closest('.iframe').addClass('loaded');
 							ctnParent.addClass('ctn-is-loaded');
 						}
@@ -261,7 +257,7 @@
 
 	var init = function () {
 		body = $('body');
-		if (body.is('#publish')) {
+		// if (body.is('#publish')) {
 			var er = window.parent !== window && window.parent.Symphony &&
 				window.parent.Symphony.Extensions.EntryRelationship;
 			if (!!er && !!er.current) {
@@ -271,7 +267,7 @@
 
 			// parent (can always be parent)
 			appendUI();
-		}
+		// }
 	};
 
 	defineExternals();
@@ -560,11 +556,10 @@
 
 					// Recalculate frame parent height when entries are rendered
 					if(window.self != window.top) {
-						// debugger;
+						
 						window.parent.iframeBubble('calculate');
 						$('#entry-relationship-ctn iframe', window.parent.document).closest('.iframe').addClass('loaded');
 						$('#entry-relationship-ctn', window.parent.document).parent().addClass('ctn-is-loaded');
-						// $('#entry-relationship-ctn iframe', window.parent.document).height($(window.document.body).outerHeight() + 'px');
 					}
 				}
 			}).error(function (data) {
