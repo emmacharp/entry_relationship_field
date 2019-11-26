@@ -8,9 +8,16 @@
  */
 
 /* iframe Bubbling Behavior */
-(function ($, undefined) {
+(function ($, S) {
 
 	'use strict';
+
+	$(document).ready(function($) {
+		const context_height = window.top.Symphony.Elements.context.outerHeight();
+		const outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
+	});
+
+	let totalOffset;
 
 	const iframeBubbleActions = {
 		calculate: () => {
@@ -18,21 +25,36 @@
 			const iframe_body = iframe.get(0).contentWindow.document.body;
 
  			$(iframe, window.self.document).height($(iframe_body).outerHeight() + 'px');
+		},
+		scrollOffset: (ctnParent) => {
+			const actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
+
+			let ctn_offset = ctnParent.offset().top;
+			
+			totalOffset =+ ctn_offset;
+			let new_scroll_position = actual_primary_scroll + totalOffset;
+
+			// debugger;
+			return new_scroll_position;
 		}
 	};
 
-	window.iframeBubble = (action) => {
-		if (!!iframeBubbleActions['calculate']) {
+	window.iframeBubble = (action, ctnParent) => {
+		if (!!iframeBubbleActions['calculate'] && action == 'calculate') {
 			iframeBubbleActions['calculate']();
 		}
 
+		if (!!iframeBubbleActions['scrollOffset'] && action == 'scrollOffset') {
+			return iframeBubbleActions['scrollOffset'](ctnParent);
+		}
+
 		if (window.self != window.top) {
-			window.parent.iframeBubble(action);
+			window.parent.iframeBubble(action, ctnParent);
 		}
 	};
 
 
-})(jQuery);
+})(jQuery, Symphony);
 
 /* Publish page customization */
 (function ($, S) {
@@ -215,6 +237,14 @@
 						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
 					}
 
+					// var context_height = window.top.Symphony.Elements.context.outerHeight() + window.top.Symphony.Elements.body.find('.notifier').outerHeight();
+					// var outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
+					// var actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
+					// var ctn_offset = ctnParent.offset().top;
+
+
+					// var new_scroll_position = actual_primary_scroll + ctn_offset;
+
 					$(iframe.get(0).contentWindow).on('load', function() {
 						const iframe_body = iframe.get(0).contentWindow.document.body;
 						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
@@ -226,6 +256,12 @@
 							$(iframe).closest('.iframe').addClass('loaded');
 							ctnParent.addClass('ctn-is-loaded');
 						}
+
+						// window.top.Symphony.Elements.primary.scrollTop(window.top.Symphony.Elements.primary.scrollTop() + ctnParent.offset().top - context_height - outer_margin);
+
+						let scroll_position = window.iframeBubble('scrollOffset', ctnParent);
+						debugger;
+						window.top.Symphony.Elements.primary.scrollTop(scroll_position);
 
 					});
 				});
