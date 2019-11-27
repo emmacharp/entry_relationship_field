@@ -12,11 +12,6 @@
 
 	'use strict';
 
-	$(document).ready(function($) {
-		const context_height = window.top.Symphony.Elements.context.outerHeight();
-		const outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
-	});
-
 	const iframeBubbleActions = {
 		calculate: (data) => {
 			const iframe = $('#entry-relationship-ctn iframe');
@@ -34,6 +29,7 @@
 				data.totalOffset = 0;
 			}
 			data.totalOffset += ctnOffset;
+
 			return data;
 		}
 	};
@@ -49,7 +45,6 @@
 		}
 
 		if (!!iframeBubbleActions['scrollOffset'] && action == 'scrollOffset') {
-			// data.totalOffset = 0;
 			data = iframeBubbleActions['scrollOffset'](data);
 		}
 
@@ -244,30 +239,18 @@
 						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
 					}
 
-					
-
-
-					// var new_scroll_position = actual_primary_scroll + ctn_offset;
-
 					$(iframe.get(0).contentWindow).on('load', function() {
 						const iframe_body = iframe.get(0).contentWindow.document.body;
 						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
 							ctn.find('.iframe').removeClass('loaded').closest('.ctn-is-loaded');
 						});
 						// If EntryRelationship is present in iframe, let render() do the sizing on Edit pages;
-						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship').length) {
+						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship li').length) {
 							window.iframeBubble('calculate');
 							$(iframe).closest('.iframe').addClass('loaded');
 							ctnParent.addClass('ctn-is-loaded');
+							window.Symphony.Extensions.EntryRelationship.scrollto();
 						}
-
-						let context_height = window.top.Symphony.Elements.context.outerHeight() + window.top.Symphony.Elements.body.find('.notifier').outerHeight();
-						let outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
-						let actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
-						let total_offset = window.iframeBubble('scrollOffset').totalOffset;
-						let complete_offset = actual_primary_scroll + total_offset - context_height - outer_margin;
-						window.top.Symphony.Elements.primary.scrollTop(complete_offset);
-
 					});
 				});
 
@@ -286,6 +269,14 @@
 					return;
 				}
 				self.current.cancel();
+			},
+			scrollto: function () {
+				let context_height = window.top.Symphony.Elements.context.outerHeight() + window.top.Symphony.Elements.body.find('.notifier').outerHeight();
+				let outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
+				let actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
+				let total_offset = window.iframeBubble('scrollOffset').totalOffset;
+				let complete_offset = actual_primary_scroll + total_offset - context_height - outer_margin;
+				window.top.Symphony.Elements.primary.scrollTop(complete_offset);
 			},
 			updateOpacity: updateOpacity,
 			instances: {},
@@ -516,7 +507,7 @@
 		};
 
 		var updateActionBar = function (li) {
-			var createLinkBtn = t.find('[data-create],[data-link],.sections-selection, [data-interactive].search');
+			var createLinkBtn = t.find('[data-create],[data-link],select.sections-selection, [data-interactive].search');
 			var maxReached = !!maximum && li.length >= maximum;
 			createLinkBtn.add(sections)[maxReached ? 'hide' : 'show']();
 		};
@@ -601,6 +592,7 @@
 						window.parent.iframeBubble('calculate');
 						$('#entry-relationship-ctn iframe', window.parent.document).closest('.iframe').addClass('loaded');
 						$('#entry-relationship-ctn', window.parent.document).parent().addClass('ctn-is-loaded');
+						window.Symphony.Extensions.EntryRelationship.scrollto();
 					}
 				}
 			}).error(function (data) {
