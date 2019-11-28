@@ -195,7 +195,7 @@
 					
 					ctn.removeClass('show').closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
 					i.removeAttr('style');
-					html.removeClass('not-allowed');
+					html.removeClass('not-allowed entry-is-active');
 					// remove iframe
 					i.empty().remove();
 
@@ -214,7 +214,7 @@
 				var ictn = $('<div />').attr('class', 'iframe');
 				var iframe = $('<iframe />').attr('src', url);
 
-				html.addClass('not-allowed');
+				html.addClass('not-allowed entry-is-active');
 				ictn.append(iframe);
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
