@@ -7,6 +7,10 @@
 	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2);
 }
 
+.field-entry_relationship {
+	--standard-field-hover-color: var(--standard-label-color);
+}
+
 .field-entry_relationship .frame {
 	--frame-border-radius: var(--radius-small);
 	--frame-background-color: var(--standard-field-background-color);
@@ -14,7 +18,7 @@
 
 /* FIELD --------*/
 	/* Structural base styles --------*/
-		.field.field-entry_relationship li {
+		.field.field-entry_relationship .frame li {
 			margin: 0;
 			width: auto;
 		}
@@ -205,10 +209,26 @@
 
 		.field-entry_relationship>footer input,
 		.field-entry_relationship>footer select,
-		.field-entry_relationship>footer label {
+		.field-entry_relationship>footer label,
+		.field-entry_relationship>footer .search {
 			flex-grow: 1;
 			width: 0;
 			flex-basis: 0;
+		}
+
+		.field-entry_relationship>footer .search {
+			display: flex;
+			position: relative;
+		}
+
+		.field-entry_relationship>footer .search .suggestions {
+			top: 100%;
+			width: 100%;
+			font-size: var(--text-smaller);
+		}
+
+		.field-entry_relationship>footer .search .suggestions li:hover {
+			background-color: var(--color-accent);
 		}
 
 		.field-entry_relationship>footer {
@@ -275,13 +295,13 @@
 		}
 
 	/* Entry container SHOWN specific styles --------*/
-		.field.field-entry_relationship li.ctn-is-shown {
+		.field.field-entry_relationship .frame li.ctn-is-shown {
 			color: var(--color-accent);
 			z-index: 1;
 			transition-duration: 200ms;
 		}
 
-		.field.field-entry_relationship li:not(.ctn-is-shown) {
+		.field.field-entry_relationship .frame li:not(.ctn-is-shown) {
 			transition-delay: 500ms;
 			transition-duration: 3000ms;
 			/*outline: 0px solid transparent;*/
@@ -291,7 +311,7 @@
 			position: initial;
 		}
 
-		.field.field-entry_relationship li.ctn-is-shown .frame-header {
+		.field.field-entry_relationship .frame li.ctn-is-shown .frame-header {
 			pointer-events: none;
 			z-index: 4;
 		}
@@ -300,7 +320,7 @@
 			display: none;
 		}
 
-		.field.field-entry_relationship li.ctn-is-shown .destructor {
+		.field.field-entry_relationship .frame li.ctn-is-shown .destructor {
 			opacity: 0;
 			pointer-events: none;
 		}
@@ -308,7 +328,7 @@
 
 
 	/* Entry container SHOWN BUT NOT LOADED specific styles --------*/
-		.field.field-entry_relationship li.ctn-is-shown:not(.ctn-is-loaded) .frame-header:after {
+		.field.field-entry_relationship .frame li.ctn-is-shown:not(.ctn-is-loaded) .frame-header:after {
 			content: url("data:image/svg+xml,%3Csvg version='1.1' id='L4' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='6' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.1'/%3E%3C/circle%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='26' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.2'/%3E%3C/circle%3E%3Ccircle fill='%230D6EFF' stroke='none' cx='46' cy='50' r='6'%3E%3Canimate attributeName='opacity' dur='1s' values='0;1;0' repeatCount='indefinite' begin='0.3'/%3E%3C/circle%3E%3C/svg%3E");
 			width: 60px;
 			height: 60px;
@@ -325,7 +345,7 @@
 			position: static;
 		}
 
-		.field.field-entry_relationship li.ctn-is-loaded {
+		.field.field-entry_relationship .frame li.ctn-is-loaded {
 			/*outline: 3px solid var(--color-accent);*/
 			border-style: solid;
 			/*box-shadow: var(--shadow);*/
@@ -400,7 +420,7 @@
 	/* Base styles --------*/
 	[id="entry-relationship-ctn"] {
 		pointer-events: none;
-		/*background-color: var(--color-clear);*/
+		background-color: var(--color-clear);
 	}
 
 	li>[id="entry-relationship-ctn"] > .iframe {
