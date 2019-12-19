@@ -54,7 +54,7 @@
 			$formTitle->appendChild(new XMLElement('span', ' - ' . __('Please choose what to delete')));
 			$formTitle->setAttribute('class', 'form-title');
 
-			$this->Form->appendChild($formTitle);
+			$this->Primary->appendChild($formTitle);
 
 			$fields = $this->getAllFieldsData();
 			$sections = $this->normalizeDataPerSection($fields);
@@ -140,7 +140,7 @@
 				Widget::TableBody($tbody), '', null,
 				array('role' => 'directory', 'aria-labelledby' => 'symphony-subheading', 'data-interactive' => 'data-interactive', 'class' => 'container-table')
 			);
-			$this->Form->appendChild($table);
+			$this->Primary->appendChild($table);
 
 			if (is_array($sections) && !empty($sections)) {
 				// Append table actions
@@ -154,7 +154,7 @@
 				$tableActions = new XMLElement('div');
 				$tableActions->setAttribute('class', 'actions');
 				$tableActions->appendChild(Widget::Apply($options));
-				$this->Form->appendChild($tableActions);
+				$this->Primary->appendChild($tableActions);
 			}
 		}
 
