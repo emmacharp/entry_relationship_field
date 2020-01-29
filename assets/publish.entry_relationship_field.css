@@ -5,6 +5,7 @@
 
 :root {
 	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2);
+	--er-security-spacing: var(--spacing-broadest);
 }
 
 .field-entry_relationship {
@@ -217,6 +218,7 @@
 			flex-grow: 1;
 			width: 0;
 			flex-basis: 0;
+			min-height: var(--spacing-broadest);
 		}
 
 		.field-entry_relationship>footer .search {
@@ -294,7 +296,8 @@
 		.field-entry_relationship select,
 		.field-entry_relationship textarea {
 			font-weight: 540;
-			color: var(--color-main-dark);
+			align-self: stretch;
+			/*color: var(--color-main-dark);*/
 		}
 
 		.field.field-entry_relationship .frame-header {
@@ -376,7 +379,8 @@
 
 		.field.field-entry_relationship .ctn-is-loaded>.frame-header {
 			/*justify-content: center;*/
-			text-indent: calc(var(--standard-outer-rhythm) + 20px);
+			text-indent: calc(var(--standard-inner-rhythm) * 2 + 20px);
+			padding-top: var(--er-security-spacing);
 		}
 
 		.field.field-entry_relationship .ctn-is-loaded>.frame-header strong {
@@ -564,6 +568,9 @@
 	}
 
 	/* Container is SHOWN and iframe is LOADED specific styles --------*/
+	li>[id="entry-relationship-ctn"].show .iframe.loaded {
+		margin-top: calc(-1 * var(--er-field-header-height) - var(--er-security-spacing) + 2px);
+	}
 	[id="entry-relationship-ctn"].show .iframe.loaded:after {
 		opacity: 0;
 		pointer-events: none;
@@ -628,14 +635,16 @@
 		background-color: var(--frontframe-background-color);
 
 		grid-template-areas: 
-			"controls controls controls"
-			"notifier notifier notifier"
-			"primary secondary-panel-switch secondary";
+			"controls"
+			"notifier"
+			"primary"
+			"secondary";
 		grid-template-rows: 
 			auto
 			auto
-			minmax(0, 1fr);
-		grid-template-columns: 1fr auto 0;
+			minmax(0, 1fr)
+			auto;
+		grid-template-columns: 1fr;
 		padding-left: var(--spacing-pico);
 		padding-right: var(--spacing-pico);
 		padding-bottom: var(--standard-outer-rhythm);
@@ -703,9 +712,11 @@
 		margin: 0;
 		position: sticky;
 		top: 0;
-		height: var(--er-field-header-height);
+		height: calc(var(--er-field-header-height) + var(--er-security-spacing));
+		margin-bottom: var(--standard-inner-rhythm);
 		box-sizing: border-box;
 		justify-content: space-between;
+		align-items: flex-end;
 		z-index: 1;
 		background-color: transparent;
 		/*color: var(--color-accent-light);*/
@@ -810,6 +821,8 @@
 
 	html.entry_relationship .page-index {
 		--backframe-background-color: var(--color-main-lighter);
+		border-top: 1px solid var(--color-main-light);
+		border-bottom: 1px solid var(--color-main-light);
 	}
 
 	 [id="primary"] .actions {
@@ -837,20 +850,20 @@
 
 	}
 
-	html.entry_relationship input.secondary-panel-switch {
+/*	html.entry_relationship input.secondary-panel-switch {
 		display: flex;
 		z-index: 101;
 		margin-left: var(--spacing-micro);
-	}
+	}*/
 
-	html.entry_relationship input.secondary-panel-switch:checked~[id="primary"] {
+	/*html.entry_relationship input.secondary-panel-switch:checked~[id="primary"] {*/
 		/*width: 0;*/
 		/*min-width: 0;*/
 		/*overflow: hidden;*/
-		opacity: .5;
+		/*opacity: .5;*/
 		/*mix-blend-mode: darken;*/
-	}
-
+	/*}*/
+/*
 	html.entry_relationship input.secondary-panel-switch:checked~[id="secondary"] {
 		width: var(--dimension-smallest);
 		box-sizing: border-box;
@@ -862,10 +875,30 @@
 	}
 	html.entry_relationship input.secondary-panel-switch {
 		border: 1px solid var(--color-ui);
-	}
+	}*/
+
+
 	html.entry_relationship input.secondary-panel-switch:checked {
 		/*left: calc(-1 * var(--dimension-tiny));*/
 		/*margin-left: calc(-1 * var(--spacing-broad));*/
+	}
+
+	/*html.entry_relationship .tab-group:before, 
+	html.entry_relationship .tab-group:after {
+		content: "";
+		display: block;
+		height: 0;
+		margin: auto;
+	}*/
+
+	html.entry_relationship [id="primary"] .tab-group {
+		/* Span whole content height only */
+		min-height: max-content;
+	}
+
+	html.entry_relationship [id="primary"] .tab-group+.tab-group {
+		border-top: 0;
+		margin-top: calc(var(--standard-inner-rhythm) * 2);
 	}
 
 
@@ -897,9 +930,20 @@
 	html.not-allowed select,
 	html.not-allowed textarea,
 	html.not-allowed button,
-	html.not-allowed a {
+	html.not-allowed a,
+	html.not-allowed strong,
+	html.not-allowed li,
+	html.not-allowed span {
 		color: var(--color-main-lighter);
 		background-color: transparent;
+	}
+
+	html.not-allowed.entry-is-active .ctn-is-shown .frame-header {
+		color: var(--color-main);
+	}
+
+	html.not-allowed.entry-is-active .ctn-is-shown .frame-header * {
+		color: inherit;
 	}
 
 	html.not-allowed .field {
