@@ -16,9 +16,9 @@
 		calculate: (data) => {
 			const iframe = $('#entry-relationship-ctn iframe');
 			const iframe_body = iframe.get(0).contentWindow.document.body;
-
- 			$(iframe, window.self.document).height($(iframe_body).outerHeight() + 'px');
-
+			const height = Math.ceil($(iframe_body).outerHeight()) + 2; //+2 pixels of safety... just in case
+ 			$(iframe, window.self.document).height(height + 'px');
+ 			console.log(height);
  			return data;
 		},
 		scrollOffset: (data) => {
@@ -193,7 +193,7 @@
 						i$(iw).trigger('beforeunload').trigger('unload');
 					}
 					
-					ctn.removeClass('show').closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
+					ctn.removeClass('show').closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded ctn-is-saving');
 					i.removeAttr('style');
 					html.removeClass('not-allowed entry-is-active');
 					// remove iframe
@@ -218,7 +218,7 @@
 				ictn.append(iframe);
 				if(ctn.is('.show')) {
 					ctn.find('.loaded').removeClass('loaded');
-					ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded');
+					ctn.closest('.ctn-is-shown').removeClass('ctn-is-shown ctn-is-loaded ctn-is-saving');
 					ctn.find('iframe').removeAttr('style src');
 					ctn.empty().append(ictn);
 					if(!!ctnParent) {
@@ -242,7 +242,7 @@
 					$(iframe.get(0).contentWindow).on('load', function() {
 						const iframe_body = iframe.get(0).contentWindow.document.body;
 						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
-							ctn.find('.iframe').removeClass('loaded').closest('.ctn-is-loaded');
+							ctn.find('.iframe').removeClass('loaded').closest('.ctn-is-loaded').removeClass('ctn-is-loaded').addClass('ctn-is-saving');
 						});
 						// If EntryRelationship is present in iframe, let render() do the sizing on Edit pages;
 						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship li').length) {
@@ -271,11 +271,10 @@
 				self.current.cancel();
 			},
 			scrollto: function () {
-				let context_height = window.top.Symphony.Elements.context.outerHeight() + window.top.Symphony.Elements.body.find('.notifier').outerHeight();
-				let outer_margin = parseFloat(getComputedStyle(window.top.document.documentElement).getPropertyValue('--standard-outer-rhythm')) * parseFloat(getComputedStyle(window.top.document.documentElement).fontSize); 
+				let context_height = window.top.Symphony.Elements.context.outerHeight();
 				let actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
 				let total_offset = window.iframeBubble('scrollOffset').totalOffset;
-				let complete_offset = actual_primary_scroll + total_offset - context_height - outer_margin;
+				let complete_offset = actual_primary_scroll + total_offset - context_height;
 				window.top.Symphony.Elements.primary.scrollTop(complete_offset);
 			},
 			updateOpacity: updateOpacity,
@@ -592,7 +591,7 @@
 						window.parent.iframeBubble('calculate');
 						$('#entry-relationship-ctn iframe', window.parent.document).closest('.iframe').addClass('loaded');
 						$('#entry-relationship-ctn', window.parent.document).parent().addClass('ctn-is-loaded');
-						window.Symphony.Extensions.EntryRelationship.scrollto();
+						window.parent.Symphony.Extensions.EntryRelationship.scrollto();
 					}
 				}
 			}).error(function (data) {
