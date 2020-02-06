@@ -26,8 +26,7 @@
 		}
 
 		.field.field-entry_relationship .frame-header .destructor {
-			width: 0;
-			flex-basis: 2em;
+			width: 2em;
 			flex-shrink: 0;
 			white-space: nowrap;
 			text-align: right;
@@ -44,11 +43,6 @@
 			padding: var(--spacing-micro);
 			display: inline-flex;
 			align-items: center;
-			/*transition-delay: var(--duration-short);*/
-		}
-
-		.field.field-entry_relationship .frame-header .destructor:hover:after {
-			/*opacity: 0;*/
 		}
 
 		.field.field-entry_relationship .frame-header .destructor a:not(:hover) {
@@ -68,16 +62,12 @@
 			margin-right: calc(-1 * var(--spacing-micro));
 		}
 
-		.field.field-entry_relationship .frame-header .destructor {
-		}
-
 		.field.field-entry_relationship .frame-header .destructor:not(:hover)>a {
 			opacity: 0;
 			pointer-events: none;
 			transition-duration: var(--duration);
 			transition-delay: var(--duration);
 		}
-
 
 		.field.field-entry_relationship>label {
 			height: auto;
@@ -210,6 +200,9 @@
 		}
 
 		.field-entry_relationship>footer {
+			--standard-field-font-size: var(--text-smaller);
+			--standard-label-font-size: var(--text-smaller);
+
 			display: flex;
 			align-items: baseline;
 			flex-wrap: wrap;
@@ -220,14 +213,12 @@
 			background-color: inherit;
 			border-top: 1px solid var(--color-ui);
 			margin-top: -1px;
-
 			box-shadow: var(--shadow-up-smaller);
-			--standard-field-font-size: var(--text-smaller);
-			--standard-label-font-size: var(--text-smaller);
 		}
 
-		.field-entry_relationship:hover>footer {
-			z-index: 1;
+		.field-entry_relationship:hover>footer,
+		.field-entry_relationship>footer:focus-within {
+			z-index: 2;
 		}
 
 		.field-entry_relationship>footer input,
@@ -347,7 +338,8 @@
 		.field-entry_relationship .frame:not(.empty)>ul:empty:before {
 			content: url("data:image/svg+xml,%3Csvg version='1.1' id='L2' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 100 102' width='30' height='30' enable-background='new 0 0 100 100' xml:space='preserve'%3E%3Ccircle fill='none' stroke='%23D9E9FF' stroke-width='6' stroke-miterlimit='10' cx='50' cy='50' r='48'/%3E%3Cline fill='none' stroke-linecap='round' stroke='%23D9E9FF' stroke-width='6' stroke-miterlimit='10' x1='50' y1='50' x2='85' y2='50.5'%3E%3CanimateTransform attributeName='transform' dur='2s' type='rotate' from='0 50 50' to='360 50 50' repeatCount='indefinite' /%3E%3C/line%3E%3Cline fill='none' stroke-linecap='round' stroke='%23D9E9FF' stroke-width='6' stroke-miterlimit='10' x1='50' y1='50' x2='49.5' y2='74'%3E%3CanimateTransform attributeName='transform' dur='15s' type='rotate' from='0 50 50' to='360 50 50' repeatCount='indefinite' /%3E%3C/line%3E%3C/svg%3E");
 			position: sticky;
-			top: calc(50% - 15px);
+			top: var(--spacing-larger);
+			bottom: var(--spacing-larger);
 		}
 
 	/* Entry container SHOWN specific styles --------*/
@@ -484,20 +476,8 @@
 			position: relative;
 		}
 
-	/* Container is SHOWN but iframe is NOT LOADED specific styles --------*/
-
-	/* Container is SHOWN and iframe is LOADED specific styles --------*/
-
-
 	/* Container is SHOWN and LOADED but iframe is NOT LOADED (waiting for save) */
 		.field.field-entry_relationship .is-shown.is-saving iframe {
-			/*position: absolute;
-			height: 1px; 
-			width: 1px;
-			overflow: hidden;
-			clip: rect(1px, 1px, 1px, 1px);
-			white-space: nowrap;*/
-
 			height: 0 !important;
 		}
 
@@ -543,9 +523,7 @@
 			padding-bottom: var(--er-field-header-height);
 		}
 
-		html.entry_relationship [id="primary"] {
-			--standard-outer-rhythm: 0;
-
+		html.entry_relationship body[id="publish"].page-single [id="primary"] {
 			overflow: visible;
 			padding: 0;
 		}
@@ -581,11 +559,9 @@
 		html.entry_relationship [id="context"] {
 			background-color: transparent;
 			justify-content: space-between;
-			height: 2em;
+			height: 0;
 			padding: 0;
-			margin-bottom: var(--standard-inner-rhythm);
-			/*align-items: center;*/
-			/*transition-delay: */
+			margin-bottom: 0;
 		}
 		
 		html.entry_relationship [id="context"] ul.tabs {
@@ -594,7 +570,6 @@
 		}
 
 		html.entry_relationship [id="context"] ul.publishtabs {
-			/*position: relative;*/
 			right: 0;
 		}
 
@@ -712,7 +687,7 @@
 
 	html.entry_relationship {
 		scrollbar-color: transparent transparent;
-		scrollbar-width: 0px;
+		scrollbar-width: none;
 		overflow: visible;
 	}
 
@@ -738,13 +713,6 @@
 	html.entry_relationship .page-index {
 		--backframe-background-color: var(--color-main-lighter);
 	}
-
-	html.entry_relationship [data-page="new"],
-	html.entry_relationship [data-page="index"] {
-		/*border-top: 1px solid var(--color-main-light);*/
-		/*border-bottom: 1px solid var(--color-main-light);*/
-	}
-
 
 	html.entry_relationship .page-index [id="primary"] td,
 	html.entry_relationship .page-index [id="primary"] th {
@@ -807,8 +775,9 @@
 		html.entry_relationship [id="secondary"] {
 			margin-top: var(--standard-outer-rhythm);
 			border-radius: var(--radius-current);
-			filter: drop-shadow(var(--shadow-smaller));
+			/*filter: drop-shadow(var(--shadow-smaller));*/
 			border: 1px solid var(--standard-field-border-color);
+			background-color: var(--standard-field-background-color);
 		}
 
 /* Specific Publish tab styles --------*/
@@ -831,17 +800,9 @@
 	}
 
 
-	/* Veil preventing user interaction on page --------*/
-	html.not-allowed [id="primary"]>*:first-child:before {
-		content: "";
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		height: auto;
-		z-index: 3;
-		cursor: not-allowed;
+	/* Preventing user interaction on page --------*/
+	html.not-allowed * {
+		cursor: not-allowed !important;
 	}
 
 	html.not-allowed {
@@ -867,8 +828,19 @@
 		background-color: transparent;
 	}
 
+	html.not-allowed input,
+	html.not-allowed select,
+	html.not-allowed textarea,
+	html.not-allowed button,
+	html.not-allowed a,
+	html.not-allowed strong,
+	html.not-allowed li,
+	html.not-allowed span,
+	html.not-allowed label {
+		pointer-events: none !important;
+	}
+
 	html.not-allowed button {
-		pointer-events: none;
 	}
 
 	/* Reestablish style contrast and interactivity on shown element --------*/
