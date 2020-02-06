@@ -68,18 +68,6 @@
 	var body = $();
 	var ctn = $();
 	var loc = window.location.toString();
-	var opacity = 0.7;
-	var opacityFactor = 0.1;
-
-	var updateOpacity = function(direction) {
-		if (direction !== -1) {
-			direction = 1;
-		}
-		opacity = opacity + (direction * opacityFactor);
-		var color = ctn.css('background-color');
-		color = color.replace(/rgba\((\d+,)\s*(\d+,)\s*(\d+,)\s*[^\)]+\)/i, 'rgba($1 $2 $3 ' + opacity + ')');
-		ctn.css('background-color', color);
-	};
 
 	var removeUI = function () {
 		html.addClass('entry_relationship');
@@ -212,7 +200,6 @@
 					i.empty().remove();
 
 				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
-					window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(-1);
 					window.parent.iframeBubble('calculate');
 				}
 				if (reRender) {
@@ -244,10 +231,6 @@
 				
 				S.Utilities.requestAnimationFrame(function () {
 					ctn.addClass('show');
-
-					if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
-						window.parent.Symphony.Extensions.EntryRelationship.updateOpacity(1);
-					}
 
 					$(iframe.get(0).contentWindow).on('load', function() {
 						$(iframe.get(0).contentWindow.document.documentElement).addClass('entry_relationship');
@@ -287,7 +270,6 @@
 				let complete_offset = actual_primary_scroll + total_offset - context_height;
 				window.top.Symphony.Elements.primary.scrollTop(complete_offset);
 			},
-			updateOpacity: updateOpacity,
 			instances: {},
 			current: null
 		};
@@ -298,17 +280,15 @@
 
 	var init = function () {
 		body = $('body');
-		// if (body.is('#publish')) {
-			var er = window.parent !== window && window.parent.Symphony &&
-				window.parent.Symphony.Extensions.EntryRelationship;
-			if (!!er && !!er.current) {
-				// child (iframe)
-				removeUI();
-			}
+		var er = window.parent !== window && window.parent.Symphony &&
+			window.parent.Symphony.Extensions.EntryRelationship;
+		if (!!er && !!er.current) {
+			// child (iframe)
+			removeUI();
+		}
 
-			// parent (can always be parent)
-			appendUI();
-		// }
+		// parent (can always be parent)
+		appendUI();
 	};
 
 	defineExternals();
