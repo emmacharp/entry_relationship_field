@@ -82,6 +82,8 @@
 	};
 
 	var removeUI = function () {
+		html.addClass('entry_relationship');
+
 		var parent = window.parent.Symphony.Extensions.EntryRelationship;
 		var parentCtn = window.parent.Symphony.Elements.contents.find('.is-shown');
 		var saved = loc.indexOf('/saved/') !== -1;
@@ -114,7 +116,6 @@
 			});
 		}
 
-		html.addClass('entry_relationship');
 
 		// remove everything in header, except notifier
 		S.Elements.header.children().not('.notifier').remove();
@@ -179,6 +180,8 @@
 			return false;
 		});
 		win.focus();
+
+		window.parent.iframeBubble('calculate');
 	};
 
 	var appendUI = function () {
@@ -247,6 +250,7 @@
 					}
 
 					$(iframe.get(0).contentWindow).on('load', function() {
+						$(iframe.get(0).contentWindow.document.documentElement).addClass('entry_relationship');
 						const iframe_body = iframe.get(0).contentWindow.document.body;
 						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
 							ctnParent.addClass('is-saving').removeClass('is-loaded');
