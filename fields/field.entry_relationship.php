@@ -1402,11 +1402,14 @@
 			$wrapper->appendChild($this->createActionBarMenu($sections));
 			$wrapper->appendChild($this->createEntriesHiddenInput($data));
 			$wrapper->setAttribute('data-value', $data['entries']);
+			$wrapper->setAttribute('data-number', count($entriesId));
+			$wrapper->setAttribute('style', '--er-field-entries-number:'. count($entriesId) . ';');
 			$wrapper->setAttribute('data-field-id', $this->get('id'));
 			$wrapper->setAttribute('data-field-label', $this->get('label'));
 			$wrapper->setAttribute('data-min', $this->get('min_entries'));
 			$wrapper->setAttribute('data-max', $this->get('max_entries'));
 			$wrapper->setAttribute('data-required', $this->get('required'));
+
 			if (isset($_REQUEST['debug'])) {
 				$wrapper->setAttribute('data-debug', true);
 			}
