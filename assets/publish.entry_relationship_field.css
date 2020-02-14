@@ -14,8 +14,8 @@
 }
 
 .field-entry_relationship .frame {
-	--frame-border-radius: var(--radius-small);
-	--frame-background-color: var(--standard-field-background-color);
+	--standard-frame-border-radius: var(--radius-small);
+	--standard-frame-background-color: var(--standard-field-background-color);
 }
 
 /* FIELD --------*/
@@ -435,6 +435,9 @@
 	/* Base styles --------*/
 		[id="entry-relationship-ctn"] {
 			pointer-events: none;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 		}
 
 		li>[id="entry-relationship-ctn"] {
@@ -444,13 +447,13 @@
 
 		[id="entry-relationship-ctn"] > .iframe {
 			transition: opacity 100ms ease-out;
-			width: 100%;
+			width: min-content;
 			opacity: 0;
 		}
 
 		[id="entry-relationship-ctn"] iframe {
 			display: block;
-			width: calc(100% + 4px);
+			width: 100vw;
 			max-width: initial;
 			transition: height 0ms cubic-bezier(0.77, 0, 0.175, 1);
 			height: 0;
@@ -509,14 +512,12 @@
 	/* Base styles */
 		html.entry_relationship {
 			--standard-hover-row-background-color: var(--color-clear);
-			--backframe-background-color: var(--frontframe-background-color);
-
-			font-size: 62.5%;
 		}
 
 		html.entry_relationship body {
 			min-height: max-content;
 			max-height: max-content;
+			height: max-content;
 			background-color: var(--frontframe-background-color);
 			padding-left: var(--spacing-pico);
 			padding-right: var(--spacing-pico);
@@ -559,9 +560,10 @@
 		html.entry_relationship [id="context"] {
 			background-color: transparent;
 			justify-content: space-between;
-			height: 0;
 			padding: 0;
+			border: 0;
 			margin-bottom: 0;
+			z-index: initial;
 		}
 		
 		html.entry_relationship [id="context"] ul.tabs {
@@ -573,6 +575,14 @@
 			right: 0;
 		}
 
+		html.entry_relationship [id="context"] ul.page {
+			position: absolute;
+			right: 0;
+			bottom: 100%;
+			margin-bottom: calc(var(--standard-inner-rhythm) + var(--spacing-micro));
+			z-index: 13;
+		}
+
 	/* Notifier container alterations --------*/
 		html.entry_relationship .notifier {
 			position: fixed;
@@ -580,7 +590,7 @@
 			left: 0;
 			right: 0;
 			margin: auto;
-			width: max-content;
+			width: 100%;
 		}
 
 		html.entry_relationship .notifier .notice {
@@ -602,7 +612,12 @@
 			box-sizing: border-box;
 			justify-content: space-between;
 			align-items: center;
+			flex-direction: row;
 			background-color: transparent;
+			max-width: var(--standard-field-max-width);
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;
 		}
 
 	/* Hide unwanted controls and buttons */
@@ -615,6 +630,7 @@
 			margin-right: var(--spacing-micro);
 			color: inherit;
 			order: 2;
+			margin-bottom: 0;
 
 		}
 
@@ -677,11 +693,13 @@
 	html.entry_relationship #nav,
 	html.entry_relationship #breadcrumbs,
 	html.entry_relationship #footer,
+	html.entry_relationship #ctrl_k,
 	html.entry_relationship button[name="action[delete]"],
 	html.entry_relationship .actions .modal,
 	html.entry_relationship .actions .drawer,
 	html.entry_relationship .actions .apply,
-	html.entry_relationship [id="primary"] .actions {
+	html.entry_relationship [id="primary"] .actions,
+	html.entry_relationship .nav-panel-switch {
 		display: none;
 	}
 
@@ -706,6 +724,11 @@
 		margin-top: 0;
 	}
 
+	html.entry_relationship [id="primary"]:before,
+	html.entry_relationship [id="primary"]:after {
+		content: none !important;
+	}
+
 	html.entry_relationship table[role="directory"] td:first-child {
 		font-size: var(--text-current);
 	}
@@ -726,59 +749,66 @@
 
 /* Secondary panel layout management options --------*/
 	/* Right-side panel model --------*/
-		/*html.entry_relationship body {
+		html.entry_relationship body {
 			grid-template-areas: 
-				"controls controls controls"
 				"notifier notifier notifier"
+				"controls controls controls"
+				"context context context"
 				"primary secondary-panel-switch secondary";
 			grid-template-rows: 
 				auto
 				auto
+				auto
 				minmax(0, 1fr);
-			grid-template-columns: 1fr auto 0;
-		}
+			grid-template-columns: minmax(0, var(--standard-field-max-width)) minmax(0, auto) minmax(0, auto);
+			max-width: max-content;
+			margin: auto;
 
-		html.entry_relationship input.secondary-panel-switch {
-			display: flex;
-			z-index: 101;
-			margin-left: var(--spacing-micro);
-		}
-
-		html.entry_relationship input.secondary-panel-switch:checked~[id="primary"] {
-			opacity: .5;
-			mix-blend-mode: darken;
 		}
 
 		html.entry_relationship input.secondary-panel-switch:checked~[id="secondary"] {
-			width: var(--er-frame-secondary-panel-width);
-			box-sizing: border-box;
-			justify-self: end;
-			z-index: 3;
-			background-color: var(--backframe-background-color);
-			border: 1px solid var(--color-ui);
+			width: var(--dimension-tinier);
+			max-height: max-content;
+			display: flex;
+			flex-direction: column;
+			opacity: 1;
+			align-self: start;
+			border: none;
+			border-radius: var(--standard-field-border-radius);
 		}
+
 
 		html.entry_relationship input.secondary-panel-switch {
-			border: 1px solid var(--color-ui);
+			display: flex;
+			margin-left: var(--spacing-micro);
 		}
 
-		html.entry_relationship input.secondary-panel-switch:checked {
-			left: calc(-1 * var(--er-frame-secondary-panel-width));
-		}*/
+		html.entry_relationship input.secondary-panel-switch:not(:checked)~[id="secondary"] {
+			width: 0;
+		}
 
 	/* Stacking fields model --------*/
-		html.entry_relationship body {
+		/*html.entry_relationship body {
 			display: flex;
 			flex-direction: column;
 		}
 
-		html.entry_relationship [id="secondary"] {
+		html.entry_relationship input.secondary-panel-switch {
+			display: none;
+		}
+
+		html.entry_relationship input.secondary-panel-switch~[id="secondary"] {
 			margin-top: var(--standard-outer-rhythm);
 			border-radius: var(--radius-current);
-			/*filter: drop-shadow(var(--shadow-smaller));*/
 			border: 1px solid var(--standard-field-border-color);
-			background-color: var(--standard-field-background-color);
-		}
+			width: 100%;
+			max-width: var(--standard-field-max-width);
+			height: auto;
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+			box-sizing: border-box;
+		}*/
 
 /* Specific Publish tab styles --------*/
 	

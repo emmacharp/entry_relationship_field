@@ -70,15 +70,35 @@
 	var loc = window.location.toString();
 
 	var removeUI = function () {
-		html.addClass('entry_relationship');
 
+		var iframe = $('#entry-relationship-ctn iframe', window.parent.Symphony.Elements.body);
 		var parent = window.parent.Symphony.Extensions.EntryRelationship;
+		var topPrimary = window.top.Symphony.Elements.primary;
 		var parentCtn = window.parent.Symphony.Elements.contents.find('.is-shown');
+		var topHtml = window.top.Symphony.Elements.html;
 		var saved = loc.indexOf('/saved/') !== -1;
 		var created = loc.indexOf('/created/') !== -1;
 		var editing = loc.indexOf('/edit/') !== -1;
 		var creating = loc.indexOf('/new/') !== -1;
 
+		//	Necessary support check for Safari the Great Laggard...
+		// To be removed once it officialy supports ResizeObserver
+		if(window.ResizeObserver !== undefined) {
+
+			var bubbleResize = new ResizeObserver(entries => {
+				for(let entry of entries) {
+					const height = Math.ceil($(body).outerHeight());
+		 			$(iframe).height(height + 'px');
+				}
+			});
+
+			var frameMaxWidthResize = new ResizeObserver(entries => {
+				for(let entry of entries) {
+					const maxwidth = Math.ceil(topPrimary.width());
+		 			$(iframe).css('max-width', maxwidth + 'px');
+				}
+			});
+		}
 		if (saved || created) {
 			if (created) {
 				parent.link(S.Context.get().env.entry_id);
@@ -103,6 +123,11 @@
 				primary.find('#id-' + value).addClass('inactive er-already-linked');
 			});
 		}
+
+		html.addClass('entry_relationship');
+		
+		// synchronize fontsize with parent for responsive adaptation
+		html.css('font-size', topHtml.css('font-size'));
 
 
 		// remove everything in header, except notifier
@@ -167,9 +192,18 @@
 
 			return false;
 		});
+		
+		//	Necessary support check for Safari the Great Laggard...
+		// To be removed once it officialy supports ResizeObserver
+		if(window.ResizeObserver === undefined) {
+			window.parent.iframeBubble('calculate');
+		} else {
+			bubbleResize.observe(body.get(0));
+			frameMaxWidthResize.observe(topPrimary.get(0));
+		}
+
 		win.focus();
 
-		window.parent.iframeBubble('calculate');
 	};
 
 	var appendUI = function () {
@@ -199,9 +233,6 @@
 					// remove iframe
 					i.empty().remove();
 
-				if (window.parent !== window && window.parent.Symphony.Extensions.EntryRelationship) {
-					window.parent.iframeBubble('calculate');
-				}
 				if (reRender) {
 					self.current.render();
 				}
@@ -240,7 +271,6 @@
 						});
 						// If EntryRelationship is present in iframe, let render() do the sizing on Edit pages;
 						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship li').length) {
-							window.iframeBubble('calculate');
 							ctnParent.addClass('is-loaded');
 							window.Symphony.Extensions.EntryRelationship.scrollto();
 						}
@@ -569,8 +599,6 @@
 
 					// Recalculate frame parent height when entries are rendered
 					if(window.self != window.top) {
-						
-						window.parent.iframeBubble('calculate');
 						$('#entry-relationship-ctn', window.parent.document).parent().addClass('is-loaded');
 					}
 				}
@@ -700,7 +728,6 @@
 			var id = t.attr('data-replace') || li.attr('data-entry-id');
 			insertPosition = undefined;
 			if (!!unlink(values(), id).changed) {
-				// unlinkAndUpdateUI(li);
 				replaceId = id;
 				openIframe(sections.val(), undefined, li);
 			}
