@@ -527,6 +527,11 @@
 		html.entry_relationship body[id="publish"].page-single [id="primary"] {
 			overflow: visible;
 			padding: 0;
+			margin: 0;
+		}
+
+		html.entry_relationship body[id="publish"].page-single .secondary-panel-switch~[id="primary"] {
+			margin-left: var(--spacing-thinner);
 		}
 
 		html.entry_relationship [id="contents"]>form>* {
@@ -569,6 +574,7 @@
 		html.entry_relationship [id="context"] ul.tabs {
 			top: auto;
 			left: auto;
+			position: relative;
 		}
 
 		html.entry_relationship [id="context"] ul.publishtabs {
@@ -699,7 +705,9 @@
 	html.entry_relationship .actions .drawer,
 	html.entry_relationship .actions .apply,
 	html.entry_relationship [id="primary"] .actions,
-	html.entry_relationship .nav-panel-switch {
+	html.entry_relationship .nav-panel-switch,
+	html.entry_relationship .context-panel-switch,
+	html.entry_relationship [id="save-and"] {
 		display: none;
 	}
 
@@ -774,17 +782,26 @@
 			opacity: 1;
 			align-self: start;
 			border: none;
-			border-radius: var(--standard-field-border-radius);
+			border-radius: var(--field-stack-border-radius);
+			margin-left: var(--standard-inner-rhythm);
+			border: 1px solid var(--color-ui);
+		}
+
+		html.entry_relationship input.context-panel-switch~[id="context"] {
+			min-height: auto;
+			height: auto;
 		}
 
 
 		html.entry_relationship input.secondary-panel-switch {
 			display: flex;
 			margin-left: var(--spacing-micro);
+			grid-area: secondary-panel-switch;
 		}
 
 		html.entry_relationship input.secondary-panel-switch:not(:checked)~[id="secondary"] {
 			width: 0;
+			display: none;
 		}
 
 	/* Stacking fields model --------*/
