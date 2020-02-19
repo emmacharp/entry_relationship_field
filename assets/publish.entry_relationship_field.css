@@ -626,6 +626,11 @@
 			margin-right: auto;
 		}
 
+		html.entry_relationship [id="controls"] a,
+		html.entry_relationship [id="controls"] button {
+			margin: 0;
+		}
+
 	/* Hide unwanted controls and buttons */
 		html.entry_relationship button[name="action[save-duplicate]"] {
 			display: none;
