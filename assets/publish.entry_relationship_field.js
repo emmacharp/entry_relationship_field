@@ -267,7 +267,10 @@
 						$(iframe.get(0).contentWindow.document.documentElement).addClass('entry_relationship');
 						const iframe_body = iframe.get(0).contentWindow.document.body;
 						$(iframe_body).find('button[name="action[save]"]').on('click', function(){
+							window.parent.Symphony.Elements.html.removeClass('entry-is-active');
+							window.Symphony.Extensions.EntryRelationship.scrollto(100);
 							ctnParent.addClass('is-saving').removeClass('is-loaded');
+
 						});
 						// If EntryRelationship is present in iframe, let render() do the sizing on Edit pages;
 						if(!$(iframe_body).is('[data-page="edit"]') || window.self == window.top || !$(iframe_body).find('.field-entry_relationship li').length) {
@@ -293,11 +296,14 @@
 				}
 				self.current.cancel();
 			},
-			scrollto: function () {
+			scrollto: function (addedOffset) {
 				let context_height = window.top.Symphony.Elements.context.outerHeight();
 				let actual_primary_scroll = window.top.Symphony.Elements.primary.scrollTop();
 				let total_offset = window.iframeBubble('scrollOffset').totalOffset;
-				let complete_offset = actual_primary_scroll + total_offset - context_height;
+				if (!addedOffset) {
+					addedOffset = 0;
+				}
+				let complete_offset = actual_primary_scroll + total_offset - context_height - addedOffset;
 				window.top.Symphony.Elements.primary.scrollTop(complete_offset);
 			},
 			instances: {},
