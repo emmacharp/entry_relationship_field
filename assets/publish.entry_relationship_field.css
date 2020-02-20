@@ -238,11 +238,6 @@
 		.field-entry_relationship>footer .search .suggestions {
 			top: 100%;
 			width: 100%;
-			font-size: var(--text-smaller);
-		}
-
-		.field-entry_relationship>footer .search .suggestions li:hover {
-			background-color: var(--color-accent);
 		}
 
 		.field-entry_relationship>footer label {
