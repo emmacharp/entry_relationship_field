@@ -5,7 +5,7 @@
 
 :root {
 	--er-field-header-height: calc(var(--spacing-thin) + var(--standard-inner-rhythm) * 2);
-	--er-frame-security-spacing: var(--spacing-broadest);
+	--er-frame-security-spacing: var(--spacing-broader);
 	--er-frame-secondary-panel-width: calc(100vw - var(--spacing-broader));
 }
 
@@ -562,8 +562,9 @@
 			justify-content: space-between;
 			padding: 0;
 			border: 0;
-			margin-bottom: 0;
+			margin-bottom: var(--standard-inner-rhythm);
 			z-index: initial;
+			max-width: var(--standard-field-max-width);
 		}
 		
 		html.entry_relationship [id="context"] ul.tabs {
@@ -572,10 +573,24 @@
 			position: relative;
 		}
 
-		html.entry_relationship [id="context"] ul.publishtabs {
-			right: 0;
+		html.entry_relationship [id="context"] ul.tabs li {
+			background-color: var(--frontframe-background-color);
 		}
 
+		html.entry_relationship [id="context"] ul.publishtabs {
+			right: 0;
+			margin-left: var(--standard-inner-rhythm);
+		}
+
+		html.entry_relationship [id="context"] ul.multilingualtabs {
+			order: -1;
+			justify-content: flex-start;	
+		}
+
+		html.entry_relationship [id="context"] ul.multilingualtabs:before {
+			content: none !important;
+		}
+		
 		html.entry_relationship [id="context"] ul.page {
 			position: absolute;
 			right: 0;
